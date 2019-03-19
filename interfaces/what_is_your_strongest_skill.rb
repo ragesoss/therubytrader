@@ -14,9 +14,6 @@ class WhatIsYourStrongestSkill < Interface
   end
 
   def setup_input_handling
-    @input = Gosu::TextInput.new
-    $window.text_input = @input
-
     set_button_down do |id|
       case id
       when Gosu::KB_DOWN
@@ -33,7 +30,6 @@ class WhatIsYourStrongestSkill < Interface
   end
 
   def update
-    @output = Gosu::Image.from_text(@input.text, 40)
     @options = SKILLS.map.with_index do |skill, i|
       style = @selected_skill_index == i ? { bold: true } : {}
       Gosu::Image.from_text(skill, 40, style)
