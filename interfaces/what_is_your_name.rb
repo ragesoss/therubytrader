@@ -24,6 +24,7 @@ class WhatIsYourName < Interface
 
   def accept_player_name
     $state[:adventurer] = Adventurer.new @input.text
+    $adventurer = $state[:adventurer]
     unset_button_down
     destroy
     WhatIsYourStrongestSkill.new.create

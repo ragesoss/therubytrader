@@ -1,6 +1,9 @@
 require_relative '../concepts/skills'
 require_relative '../concepts/skillset'
+require_relative '../concepts/town'
+require_relative '../concepts/money'
 require_relative '../interfaces/in_town'
+
 
 class WhatIsYourStrongestSkill < Interface
   def initialize
@@ -21,11 +24,10 @@ class WhatIsYourStrongestSkill < Interface
       when Gosu::KB_UP
         @selected_skill_index = (@selected_skill_index - 1) % SKILLS.length
       when Gosu::KB_ENTER, Gosu::KB_RETURN
-        $state[:adventurer].skillset = Skillset.new SKILLS[@selected_skill_index]
+        $adventurer.skillset = Skillset.new SKILLS[@selected_skill_index]
         unset_button_down
         destroy
-        InTown.new.create
-        pp $state
+        InTown.new(Town.new('Flossvale'), { greeting: welcome_message }).create
       end
     end
   end
@@ -43,5 +45,9 @@ class WhatIsYourStrongestSkill < Interface
     @options.each.with_index do |option, i|
       option.draw 50, 50*(i+1), 0
     end
+  end
+
+  def welcome_message
+    "Wecome to the world, #{$adventurer.name}! You have #{$adventurer.life} life. You have #{$adventurer.money} #{MONEY}."
   end
 end
