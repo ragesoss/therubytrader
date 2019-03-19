@@ -17,6 +17,10 @@ class Market
     populate
   end
 
+  def remove good, quantity
+    instance_variable_get("@#{good}")[:quantity] -= quantity
+  end
+
   private
 
   def populate

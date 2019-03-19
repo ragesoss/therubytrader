@@ -1,3 +1,5 @@
+require_relative '../actions/market_actions'
+
 class InTown < Interface
   attr_reader :town
   def initialize town, options = {}
@@ -6,8 +8,8 @@ class InTown < Interface
       @greeting = Gosu::Image.from_text(options[:greeting], 30)
     end
     @description = Gosu::Image.from_text(town.describe, 30)
-
     set_overview
+    setup_input_handling
     pp $state
   end
 
@@ -32,14 +34,25 @@ class InTown < Interface
   def set_overview
     @selected_option_index = 0
     @options = OVERVIEW_ACTIONS
-    setup_input_handling
   end
 
   def rest
     puts 'resting'
   end
 
+  SHOP_ACTIONS = {
+    buy: "Buy",
+    sell: "Sell",
+    leave: "Leave"
+  }
   def shop
+    @selected_option_index = 0
+    @options = SHOP_ACTIONS
+  end
+
+  def buy
+    MarketActions.buy :rubies, town.market
+    pp $state
     pp town.market
   end
 
