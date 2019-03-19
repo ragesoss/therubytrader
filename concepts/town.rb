@@ -1,3 +1,5 @@
+require_relative './market'
+
 class Town
   attr_accessor :name, :population
   def initialize name, population: nil
@@ -7,5 +9,9 @@ class Town
 
   def describe
     "You're in #{name}, a town of #{population}."
+  end
+
+  def market
+    @market ||= Market.new(self)
   end
 end

@@ -1,10 +1,11 @@
 class InTown < Interface
+  attr_reader :town
   def initialize town, options = {}
     @town = town
     if options[:greeting]
       @greeting = Gosu::Image.from_text(options[:greeting], 30)
     end
-    @description = Gosu::Image.from_text(@town.describe, 30)
+    @description = Gosu::Image.from_text(town.describe, 30)
 
     set_overview
     pp $state
@@ -39,7 +40,7 @@ class InTown < Interface
   end
 
   def shop
-    puts 'shopping'
+    pp town.market
   end
 
   def talk
