@@ -1,16 +1,19 @@
 require_relative '../concepts/skills'
+require_relative '../concepts/skillset'
+require_relative '../interfaces/in_town'
 
 class WhatIsYourStrongestSkill < Interface
   def initialize
-    @input = Gosu::TextInput.new
-    $window.text_input = @input
-    capture_enter
+    setup_input_handling
     @label = Gosu::Image.from_text('What is your strongest skill?', 30)
     @selected_skill_index = 0
     @options = []
   end
 
-  def capture_enter
+  def setup_input_handling
+    @input = Gosu::TextInput.new
+    $window.text_input = @input
+
     set_button_down do |id|
       case id
       when Gosu::KB_DOWN
@@ -18,9 +21,10 @@ class WhatIsYourStrongestSkill < Interface
       when Gosu::KB_UP
         @selected_skill_index = (@selected_skill_index - 1) % SKILLS.length
       when Gosu::KB_ENTER, Gosu::KB_RETURN
-        $state[:strongest_skill] = SKILLS[@selected_skill_index]
+        $state[:adventurer].skillset = Skillset.new SKILLS[@selected_skill_index]
         unset_button_down
         destroy
+        InTown.new.create
         pp $state
       end
     end

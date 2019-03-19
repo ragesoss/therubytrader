@@ -1,16 +1,18 @@
 require_relative './interface'
+require_relative '../concepts/adventurer'
 require_relative './what_is_your_strongest_skill'
 
 class WhatIsYourName < Interface
   def initialize
-    @input = Gosu::TextInput.new
-    $window.text_input = @input
-    capture_enter
+    setup_input_handling
     @label = Gosu::Image.from_text('What is your name, adventurer?', 30)
     @output = Gosu::Image.from_text(String.new, 40)
   end
 
-  def capture_enter
+  def setup_input_handling
+    @input = Gosu::TextInput.new
+    $window.text_input = @input
+
     set_button_down do |id|
       case id
       when Gosu::KB_ENTER, Gosu::KB_RETURN
@@ -21,7 +23,7 @@ class WhatIsYourName < Interface
   end
 
   def accept_player_name
-    $state[:player_name] = @input.text
+    $state[:adventurer] = Adventurer.new @input.text
     unset_button_down
     destroy
     WhatIsYourStrongestSkill.new.create
