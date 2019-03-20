@@ -57,7 +57,6 @@ class InTown < Interface
       @result = Gosu::Image.from_text("Sorry, you don't have enough #{MONEY}.", 30)
     end
     update_greeting
-    set_overview
   end
 
   SHOP_ACTIONS = {
@@ -117,8 +116,9 @@ class InTown < Interface
     sell_goods @selected_option # regenerates the options
   end
 
+
   def talk
-    puts 'talking'
+    @result = Gosu::Image.from_text("You chat with several passersby, but you learn nothing new.", 30)
   end
 
 
