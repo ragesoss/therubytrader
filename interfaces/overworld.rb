@@ -5,11 +5,23 @@ class Overworld < Interface
     @greeting = Gosu::Image.from_text($adventurer.status, 30)
     @prompt = Gosu::Image.from_text('Where do you want to travel?', 30)
     @options = {
+      flossvale: '• Flossvale',
       foo: '• Foo',
       bar: '• Bar'
     }
     @selected_option = 0
     setup_input_handling
+    set_actions
+  end
+
+  def set_actions
+    @options.keys.each do |town_name|
+      define_singleton_method(town_name) do
+        $state[:towns][town_name] ||= Town.new(town_name.to_s.capitalize)
+        destroy
+        InTown.new($state[:towns][town_name]).create
+      end
+    end
   end
 
   def update
@@ -22,6 +34,11 @@ class Overworld < Interface
       style = @selected_option == i ? { bold: true } : {}
       Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 50*i, 1
     end
+  end
+
+  def take_action
+    selected_action = @options.keys[@selected_option]
+    send selected_action
   end
 
   def setup_input_handling

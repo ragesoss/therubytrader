@@ -4,7 +4,6 @@ require_relative '../concepts/town'
 require_relative '../concepts/money'
 require_relative '../interfaces/in_town'
 
-
 class WhatIsYourStrongestSkill < Interface
   def initialize
     setup_input_handling
@@ -24,7 +23,9 @@ class WhatIsYourStrongestSkill < Interface
         $adventurer.skillset = Skillset.new SKILLS[@selected_skill_index]
         unset_button_down
         destroy
-        InTown.new(Town.new('Flossvale'), { greeting: welcome_message }).create
+        starting_town = Town.new('Flossvale')
+        InTown.new(starting_town, { greeting: welcome_message }).create
+        $state[:towns] = { flossvale: starting_town }
       end
     end
   end
