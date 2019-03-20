@@ -44,6 +44,6 @@ class WhatIsYourStrongestSkill < Interface
   end
 
   def welcome_message
-    "Wecome to the world, #{$adventurer.name}! You have #{$adventurer.life} life. You have #{$adventurer.money} #{MONEY}."
+    "Wecome to the world, #{$adventurer.name}! #{$adventurer.status}"
   end
 end

@@ -10,6 +10,10 @@ class Adventurer
     @inventory = Inventory.new(Hash.new 0)
   end
 
+  def status
+    "You have #@life life. You have #@money #{MONEY}."
+  end
+
   def heal!
     @life = @max_life
   end
