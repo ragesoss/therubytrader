@@ -9,7 +9,7 @@ class Overworld < Interface
       foo: '• Foo',
       bar: '• Bar'
     }
-    @selected_option = 0
+    @selected_option = @options.keys.index location.name.downcase.to_sym
     setup_input_handling
     set_actions
   end
