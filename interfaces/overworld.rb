@@ -16,8 +16,8 @@ class Overworld < Interface
   end
 
   def draw
-    @background.draw 0, 0, 0, 0.391, 0.391
-    @greeting.draw  10, 10, 0
+    @background.draw 0, 0, 0, 0.5, 0.5
+    @greeting.draw 10, 10, 0
     @options.each.with_index do |option, i|
       style = @selected_option == i ? { bold: true } : {}
       Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 50*i, 1

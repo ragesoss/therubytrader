@@ -5,7 +5,7 @@ class MainScreen < Gosu::Window
   attr_accessor :on_button_down
 
   def initialize
-    super 800, 800
+    super 1024, 1024
     self.caption = 'The Ruby Trader'
     @elements = []
   end
