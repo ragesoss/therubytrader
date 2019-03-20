@@ -5,6 +5,8 @@ class InTown < Interface
   attr_reader :town
   def initialize town, options = {}
     @town = town
+    @background = Gosu::Image.new('media/town-small.png')
+
     if options[:greeting]
       @greeting = Gosu::Image.from_text(options[:greeting], 30)
     end
@@ -18,6 +20,7 @@ class InTown < Interface
   end
 
   def draw
+    @background.draw 350, 100, 0
     @greeting&.draw 10, 10, 0
     @description.draw 10, 50, 0
     @result&.draw 10, 600, 0
