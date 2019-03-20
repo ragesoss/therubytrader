@@ -1,5 +1,6 @@
 require_relative '../actions/market_actions'
 require_relative '../actions/inn_actions'
+require_relative './overworld'
 
 class InTown < Interface
   attr_reader :town
@@ -110,7 +111,7 @@ class InTown < Interface
     if result.success?
       @result = Gosu::Image.from_text("Sold! You have #{$adventurer.money} #{MONEY}.", 30)
     else
-      @result = Gosu::Image.from_text("You don't have #{good} to sell.", 30)
+      @result = Gosu::Image.from_text("You don't have any #{good} to sell.", 30)
     end
     update_greeting
     sell_goods @selected_option # regenerates the options
@@ -123,7 +124,9 @@ class InTown < Interface
 
 
   def leave
-    puts 'leaving'
+    unset_button_down
+    destroy
+    Overworld.new(town).create
   end
 
   def take_action
