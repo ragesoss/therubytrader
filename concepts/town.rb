@@ -14,4 +14,8 @@ class Town
   def market
     @market ||= Market.new(self)
   end
+
+  def inn_cost
+    @inn_cost ||= rand(5..15)
+  end
 end

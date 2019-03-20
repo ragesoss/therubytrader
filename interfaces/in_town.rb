@@ -1,4 +1,5 @@
 require_relative '../actions/market_actions'
+require_relative '../actions/inn_actions'
 
 class InTown < Interface
   attr_reader :town
@@ -39,7 +40,12 @@ class InTown < Interface
   end
 
   def rest
-    puts 'resting'
+    result = InnActions.rest town.inn_cost
+    if result.success?
+      @result = Gosu::Image.from_text("You have #{$adventurer.money} #{MONEY} left. You're at full life.", 30)
+    else
+      @result = Gosu::Image.from_text("Sorry, you don't have enough #{MONEY}.", 30)
+    end
   end
 
   SHOP_ACTIONS = {
