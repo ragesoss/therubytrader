@@ -5,10 +5,10 @@ class Inventory
   end
 
   def add(good, quantity)
-    if goods[good]
-      goods[good] += quantity
-    else
-      goods[good] = quantity
-    end
+    goods[good] += quantity
+  end
+
+  def remove(good, quantity)
+    goods[good] -= quantity
   end
 end

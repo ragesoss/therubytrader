@@ -5,7 +5,7 @@ class Adventurer
   def initialize name
     @name = name
     @life = 20
-    @money = 10
-    @inventory = Inventory.new({})
+    @money = 100
+    @inventory = Inventory.new(Hash.new 0)
   end
 end

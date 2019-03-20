@@ -1,1 +1,1 @@
-MONEY = 'rubies'
+MONEY = 'copper'

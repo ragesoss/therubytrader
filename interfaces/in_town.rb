@@ -19,6 +19,7 @@ class InTown < Interface
   def draw
     @greeting&.draw 10, 10, 0
     @description.draw 10, 50, 0
+    @result&.draw 10, 600, 0
     @options.each.with_index do |option, i|
       style = @selected_option_index == i ? { bold: true } : {}
       Gosu::Image.from_text(option[1], 30, style).draw 50, 120 + 50*i, 0
@@ -34,6 +35,7 @@ class InTown < Interface
   def set_overview
     @selected_option_index = 0
     @options = OVERVIEW_ACTIONS
+    @result = nil
   end
 
   def rest
@@ -43,7 +45,7 @@ class InTown < Interface
   SHOP_ACTIONS = {
     buy: "Buy",
     sell: "Sell",
-    leave: "Leave"
+    leave_shop: "Leave"
   }
   def shop
     @selected_option_index = 0
@@ -51,14 +53,31 @@ class InTown < Interface
   end
 
   def buy
-    MarketActions.buy :rubies, town.market
-    pp $state
-    pp town.market
+    result = MarketActions.buy :rubies, town.market
+    if result.success?
+      @result = Gosu::Image.from_text("You have #{$adventurer.money} #{MONEY} left.", 30)
+    else
+      @result = Gosu::Image.from_text("Sorry, you don't have enough #{MONEY}.", 30)
+    end
+  end
+
+  def sell
+    result = MarketActions.sell :rubies, town.market
+    if result.success?
+      @result = Gosu::Image.from_text("Sold! You have #{$adventurer.money} #{MONEY}.", 30)
+    else
+      @result = Gosu::Image.from_text("You don't have anything to sell.", 30)
+    end
+  end
+
+  def leave_shop
+    set_overview
   end
 
   def talk
     puts 'talking'
   end
+
 
   def leave
     puts 'leaving'
