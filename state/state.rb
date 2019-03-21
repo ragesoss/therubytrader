@@ -20,6 +20,12 @@ class State
     $adventurer = $state[:adventurer]
   end
 
+  def self.destroy_save_file
+    if File.exist? 'save_file'
+      File.delete 'save_file'
+    end
+  end
+
   def self.save
     File.write 'save_file', Marshal.dump($state)
   end

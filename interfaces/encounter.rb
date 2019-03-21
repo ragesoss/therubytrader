@@ -1,3 +1,6 @@
+require_relative '../actions/encounter_actions'
+require_relative '../concepts/enemies/goblin'
+
 class Encounter < Interface
   attr_reader :destination, :distance_remaining
 
@@ -5,19 +8,49 @@ class Encounter < Interface
     @destination = destination
     @distance_remaining = distance_remaining
 
-    @description = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, encounter a goblin!", 30)
-    @options = {
-      continue_on: "Continue the journey to #{destination.name}."
-    }
+    @enemy = Goblin.new
+    @description = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, you encounter a goblin!", 30)
+    set_fight_options
     @selected_option = 0
     setup_input_handling
   end
 
+  def set_fight_options
+    @options = {
+      fight: "Fight",
+      run: "Run!"
+    }
+  end
+
   def update
+    if $adventurer.dead?
+      @status = Gosu::Image.from_text("You have have died!", 30)
+    elsif @enemy.alive?
+      @status = Gosu::Image.from_text("You have #{$adventurer.life} life. The enemy has #{@enemy.life} life.", 30)
+    else
+      @status = Gosu::Image.from_text("You have #{$adventurer.life} life, and the enemy is dead.", 30)
+    end
+  end
+ 
+  def fight
+    result = EncounterActions.fight @enemy
+    if result.success?
+      set_victory
+    elsif $adventurer.dead?
+      set_defeat
+    end
+  end
+
+  def run
+    result = EncounterActions.run_from @enemy
+    if result.success?
+      set_escape
+    end
   end
 
   def draw
     @description.draw 10, 50, 0
+    @status.draw 10, 100, 0
     @options.each.with_index do |option, i|
       style = @selected_option == i ? { bold: true } : {}
       Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 50*i, 0
@@ -30,9 +63,35 @@ class Encounter < Interface
     TravelActions.continue_on_to destination, distance_remaining
   end
 
+  def end_game
+    State.destroy_save_file
+    $window.close!
+  end
+
   def take_action
     selected_action = @options.keys[@selected_option]
     send selected_action
+  end
+
+  def set_escape
+    @options = {
+      continue_on: "You got away! Continue the journey to #{destination.name}."
+    }
+    @selected_option = 0
+  end
+
+  def set_victory
+    @options = {
+      continue_on: "You've won the fight! Continue the journey to #{destination.name}."
+    }
+    @selected_option = 0
+  end
+
+  def set_defeat
+    @options = {
+      end_game: "Your journey has ended."
+    }
+    @selected_option = 0
   end
 
   def setup_input_handling

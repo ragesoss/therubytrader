@@ -20,7 +20,7 @@ class WhatIsYourStrongestSkill < Interface
       when Gosu::KB_UP
         @selected_skill_index = (@selected_skill_index - 1) % SKILLS.length
       when Gosu::KB_ENTER, Gosu::KB_RETURN
-        $adventurer.skillset = Skillset.new SKILLS[@selected_skill_index]
+        $adventurer.change_skill SKILLS[@selected_skill_index], 2
         unset_button_down
         destroy
         starting_town = Town.new('Flossvale')

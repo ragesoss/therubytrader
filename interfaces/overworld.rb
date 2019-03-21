@@ -66,6 +66,8 @@ class Overworld < Interface
         @selected_option = (@selected_option + 1) % towns.length
       when Gosu::KB_UP
         @selected_option = (@selected_option - 1) % towns.length
+      when Gosu::KB_S
+        pp $state
       when Gosu::KB_ENTER, Gosu::KB_RETURN
         take_action
       end

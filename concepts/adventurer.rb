@@ -1,13 +1,17 @@
 require_relative './inventory'
-class Adventurer
-  attr_accessor :name, :life, :money, :skillset, :inventory
+require_relative './character'
 
+class Adventurer < Character
   def initialize name
     @name = name
     @max_life = 20
     @life = 20
     @money = 100
     @inventory = Inventory.new(Hash.new 0)
+
+    SKILLS.each do |skill|
+      send("#{skill}=", 1)
+    end
   end
 
   def status
@@ -28,5 +32,9 @@ class Adventurer
 
   def get_paid amount
     @money += amount
+  end
+
+  def damage_range
+    0..3
   end
 end
