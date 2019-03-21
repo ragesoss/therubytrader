@@ -3,11 +3,10 @@ require_relative '../actions/travel_actions'
 class Overworld < Interface
   def initialize location
     $state[:location] = location.key
+    @location = location
     @background = Gosu::Image.new('media/overworld.png')
     @greeting = Gosu::Image.from_text($adventurer.status, 30)
     @prompt = Gosu::Image.from_text('Where do you want to travel?', 30)
-    pp location
-    pp towns
     @selected_option = towns.index location
     setup_input_handling
     set_actions
@@ -24,7 +23,7 @@ class Overworld < Interface
    towns.each do |town|
       define_singleton_method(town.key) do
         destroy
-        TravelActions.set_off(to: town)
+        TravelActions.set_off_to(town)
       end
     end
   end
@@ -36,12 +35,22 @@ class Overworld < Interface
     @background.draw 0, 0, 0, 0.5, 0.5
     @greeting.draw 10, 10, 0
     towns.each.with_index do |town, i|
-      style = @selected_option == i ? { bold: true } : {}
+      selected = @selected_option == i
+      style = selected ? { bold: true } : {}
+      z_index = selected ? 3 : 1
+      size = 30
       pin = "• #{town.name}"
+      color = if town == @location
+                Gosu::Color.argb(0xff_ffd972)
+              elsif selected
+                Gosu::Color.argb(0xff_ffffff)
+              else
+                Gosu::Color.argb(0xff_808080)
+              end
       # label
-      Gosu::Image.from_text(pin, 30, style).draw town.lat, town.long, 2
+      Gosu::Image.from_text(pin, size, style).draw town.lat, town.long, z_index + 1, 1, 1, color
       # shadow
-      Gosu::Image.from_text(pin, 30, style).draw town.lat + 2, town.long + 2, 1, 1, 1, Gosu::Color.argb(0xff_000000)
+      Gosu::Image.from_text(pin, size, style).draw town.lat + 2, town.long + 2, z_index, 1, 1, Gosu::Color.argb(0xff_000000)
     end
   end
 

@@ -12,7 +12,6 @@ class InTown < Interface
     @description = Gosu::Image.from_text(town.describe, 30)
     set_overview
     setup_input_handling
-    pp $state
   end
 
   def update
