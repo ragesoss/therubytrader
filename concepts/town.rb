@@ -7,6 +7,10 @@ class Town
     @population = population || rand(2000)
   end
 
+  def key
+    name.downcase.to_sym
+  end
+
   def describe
     "You're in #{name}, a town of #{population}."
   end

@@ -1,6 +1,6 @@
 class Overworld < Interface
   def initialize location
-    @current_location = location
+    $state[:location] = location.key
     @background = Gosu::Image.new('media/overworld.png')
     @greeting = Gosu::Image.from_text($adventurer.status, 30)
     @prompt = Gosu::Image.from_text('Where do you want to travel?', 30)
@@ -9,7 +9,7 @@ class Overworld < Interface
       foo: '• Foo',
       bar: '• Bar'
     }
-    @selected_option = @options.keys.index location.name.downcase.to_sym
+    @selected_option = @options.keys.index location.key
     setup_input_handling
     set_actions
   end

@@ -5,6 +5,7 @@ require_relative './overworld'
 class InTown < Interface
   attr_reader :town
   def initialize town, options = {}
+    $state[:location] = town.key
     @town = town
     @background = Gosu::Image.new('media/town-small.png')
     update_greeting options[:greeting]
