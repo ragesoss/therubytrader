@@ -1,3 +1,5 @@
+require_relative '../actions/travel_actions'
+
 class Overworld < Interface
   def initialize location
     $state[:location] = location.key
@@ -22,7 +24,7 @@ class Overworld < Interface
    towns.each do |town|
       define_singleton_method(town.key) do
         destroy
-        InTown.new($state[:towns][town.key]).create
+        TravelActions.set_off(to: town)
       end
     end
   end
