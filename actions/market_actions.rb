@@ -2,8 +2,8 @@ require_relative './action'
 
 class MarketActions < Action
   def self.buy good, market
-    price = market.send(good)[:price]
-    if $adventurer.can_afford? price
+    price = market.price(good)
+    if $adventurer.can_afford?(price) && market.available?(good)
       $adventurer.inventory.add good, 1
       $adventurer.pay price
       market.remove good, 1 

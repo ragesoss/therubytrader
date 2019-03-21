@@ -17,12 +17,28 @@ class Market
     populate
   end
 
+  def price good
+    send(good)[:price]
+  end
+
+  def qauntity good
+    send(good)[:quantity]
+  end
+
+  def available? good
+    send(good)[:quantity].positive?
+  end
+
   def buy_options
-    GOODS.to_h do |good|
+    options = []
+    GOODS.each do |good|
+      next unless available? good
       price = send(good)[:price]
       quantity = send(good)[:quantity]
-      ["buy_#{good}", "#{good}: #{price} cp (#{quantity} available)"]
-    end.merge({ shop: "Done buying" })
+      options << ["buy_#{good}", "#{good}: #{price} cp (#{quantity} available)"]
+    end
+    options << [:shop, "Done buying"]
+    options.to_h
   end
 
   def sell_options
