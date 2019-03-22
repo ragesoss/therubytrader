@@ -10,7 +10,7 @@ class MapReader
     @image.get_pixels(row, column, 3, 3)
   end
 
-  IGNORE_COLORS = %w[black gray]
+  IGNORE_COLORS = %w[black gray fractal]
   def average_value(row, column)
     r = []
     g = []
@@ -26,8 +26,24 @@ class MapReader
     end
     [r.sum / r.count, g.sum / g.count, b.sum / b.count]
   rescue => e
-    puts color
     puts row, column
     raise e
+  end
+
+  #############
+  # DEBUGGING #
+  #############
+  def mark_location row, column
+    10.times do |i|
+      this_row = row + i
+      10.times do |j|
+        this_column = column + j
+        @image.pixel_color(this_row, this_column, 'fuchsia')
+      end
+    end
+  end
+
+  def write_image
+    @image.write 'media/overworld.marked.png'
   end
 end

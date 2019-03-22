@@ -6,7 +6,6 @@ class Town
   def initialize name, population: nil, location: nil
     @name = name
     @population = population || rand(2000)
-    pp @name
     @location = location || TownPlacer.new_location
   end
 
