@@ -12,7 +12,13 @@ class Overworld < Interface
     @background = Gosu::Image.new('media/overworld.png')
     @greeting = Gosu::Image.from_text($adventurer.status, 30)
     @prompt = Gosu::Image.from_text('Where do you want to travel?', 30)
-    @selected_option = towns.index location
+    @far_towns_draw ||= far_towns.map do |town|
+      pin = "• #{town.name}"
+      image = Gosu::Image.from_text(pin, INACTIVE_SIZE)
+      [town, image]
+    end
+
+    @selected_option = nearby_towns.index location
     setup_input_handling
     set_actions
   end
@@ -61,10 +67,9 @@ class Overworld < Interface
     @background.draw 0, 0, 0, 0.5, 0.5
     @greeting.draw 10, 10, 0
 
-    far_towns.each do |town|
-      pin = "• #{town.name}"
-      Gosu::Image.from_text(pin, INACTIVE_SIZE).draw town.lat, town.long, 2, 1, 1, GRAY
-      Gosu::Image.from_text(pin, INACTIVE_SIZE).draw town.lat + 1, town.long + 1, 1, 1, 1, BLACK
+    @far_towns_draw.each do |town, label|
+      label.draw town.lat, town.long, 2, 1, 1, GRAY
+      label.draw town.lat + 1, town.long + 1, 1, 1, 1, BLACK
     end
 
     nearby_towns.each.with_index do |town, i|
