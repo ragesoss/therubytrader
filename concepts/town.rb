@@ -25,11 +25,24 @@ class Town
     @inn_cost ||= rand(5..15)
   end
 
-  def lat
+  def true_lat
     location[0]
   end
 
-  def long
+  def true_long
     location[1]
+  end
+
+  # account for the offset of the text bullet vs the location,
+  # as well as the ratio between the window and the map image
+  BULLET_OFFSET_X = -2
+  BULLET_OFFSET_Y = -12
+  WINDOW_TO_MAP_RATIO = 0.5
+  def lat
+    (BULLET_OFFSET_X + location.first * WINDOW_TO_MAP_RATIO).to_i
+  end
+
+  def long
+    (BULLET_OFFSET_Y + location.last * WINDOW_TO_MAP_RATIO).to_i
   end
 end

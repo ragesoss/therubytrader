@@ -10,7 +10,7 @@ class MapReader
     @image.get_pixels(row, column, 3, 3)
   end
 
-  IGNORE_COLORS = %w[black gray fractal]
+  IGNORE_COLORS = %w[black gray fractal white]
   def average_value(row, column)
     r = []
     g = []
