@@ -1,5 +1,10 @@
 require_relative '../actions/travel_actions'
 
+YELLOW = Gosu::Color.argb(0xff_ffd972)
+WHITE = Gosu::Color.argb(0xff_ffffff)
+GRAY = Gosu::Color.argb(0xff_808080)
+BLACK = Gosu::Color.argb(0xff_000000)
+
 class Overworld < Interface
   def initialize location
     $state[:location] = location.key
@@ -22,8 +27,21 @@ class Overworld < Interface
     end
   end
 
+  MAX_TRAVEL = 400
+  def nearby_towns
+    @nearby_towns ||= towns.select do |town|
+      Distance.between(town.location, @location.location) <= MAX_TRAVEL
+    end
+  end
+
+  def far_towns
+    @far_towns ||= towns.select do |town|
+      Distance.between(town.location, @location.location) > MAX_TRAVEL
+    end
+  end
+
   def set_actions
-   towns.each do |town|
+   nearby_towns.each do |town|
       define_singleton_method(town.key) do
         destroy
         TravelActions.set_off_to(town)
@@ -34,31 +52,39 @@ class Overworld < Interface
   def update
   end
 
+  ACTIVE_SIZE = 30
+  INACTIVE_SIZE = 20
   def draw
     @background.draw 0, 0, 0, 0.5, 0.5
     @greeting.draw 10, 10, 0
-    towns.each.with_index do |town, i|
+
+    far_towns.each do |town|
+      pin = "• #{town.name}"
+      Gosu::Image.from_text(pin, INACTIVE_SIZE).draw town.lat, town.long, 2, 1, 1, GRAY
+      Gosu::Image.from_text(pin, INACTIVE_SIZE).draw town.lat + 1, town.long + 1, 1, 1, 1, BLACK
+    end
+
+    nearby_towns.each.with_index do |town, i|
       selected = @selected_option == i
       style = selected ? { bold: true } : {}
       z_index = selected ? 3 : 1
-      size = 30
       pin = "• #{town.name}"
       color = if town == @location
-                Gosu::Color.argb(0xff_ffd972)
+                YELLOW
               elsif selected
-                Gosu::Color.argb(0xff_ffffff)
+                WHITE
               else
-                Gosu::Color.argb(0xff_808080)
+                GRAY
               end
       # label
-      Gosu::Image.from_text(pin, size, style).draw town.lat, town.long, z_index + 1, 1, 1, color
+      Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat, town.long, z_index + 1, 1, 1, color
       # shadow
-      Gosu::Image.from_text(pin, size, style).draw town.lat + 2, town.long + 2, z_index, 1, 1, Gosu::Color.argb(0xff_000000)
+      Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat + 2, town.long + 2, z_index, 1, 1, BLACK
     end
   end
 
   def take_action
-    selected_action = towns[@selected_option].key
+    selected_action = nearby_towns[@selected_option].key
     send selected_action
   end
 
@@ -66,9 +92,9 @@ class Overworld < Interface
     set_button_down do |id|
       case id
       when Gosu::KB_DOWN
-        @selected_option = (@selected_option + 1) % towns.length
+        @selected_option = (@selected_option + 1) % nearby_towns.length
       when Gosu::KB_UP
-        @selected_option = (@selected_option - 1) % towns.length
+        @selected_option = (@selected_option - 1) % nearby_towns.length
       when Gosu::KB_S
         pp $state
       when Gosu::KB_ENTER, Gosu::KB_RETURN
