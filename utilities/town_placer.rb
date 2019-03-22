@@ -10,8 +10,10 @@ class TownPlacer
   def self.new_location
     location = random_location
 
-    rgb = map_reader.average_value *location
-    if is_water_color? *rgb
+    hsl = map_reader.average_value *location
+    if water_color? *hsl
+      return new_location
+    elsif too_close_to_another_town? location
       return new_location
     end
 
@@ -22,10 +24,16 @@ class TownPlacer
     [rand(MAP_RANGE), rand(MAP_RANGE)]
   end
 
-  def self.is_water_color? r, g, b
-    rg_ratio = r.to_f / g
-    rb_ratio = r.to_f / b
-    (0.95..1.05).cover?(rg_ratio) && (0.54..0.60).cover?(rb_ratio)
+  def self.water_color? h, s, l
+    (239..241).cover? h
+  end
+
+  MIN_DISTANCE = 180
+  def self.too_close_to_another_town? location
+    return false if $state[:towns].nil?
+
+    return false if rand(8) == 0 # allow a few too-close towns: twin cities
+    Distance.to_nearest_town(location) < MIN_DISTANCE
   end
 end
 

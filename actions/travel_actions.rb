@@ -1,5 +1,6 @@
 require_relative './action'
 require_relative '../interfaces/encounter'
+require_relative '../utilities/distance'
 
 class TravelActions < Action
   def self.set_off_to destination
@@ -25,12 +26,6 @@ class TravelActions < Action
   end
 
   def self.distance_to location
-    distance State.location.location, location.location
-  end
-
-  def self.distance point_one, point_two
-    Math.sqrt(
-      (point_one[0] - point_two[0])**2 + (point_one[1] - point_two[1])**2
-    ).round
+    Distance.between State.location.location, location.location
   end
 end

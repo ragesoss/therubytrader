@@ -10,21 +10,21 @@ class MapReader
     @image.get_pixels(row, column, 3, 3)
   end
 
-  IGNORE_COLORS = %w[black gray fractal white]
   def average_value(row, column)
-    r = []
-    g = []
-    b = []
+    h = []
+    s = []
+    l = []
     patch(row, column).each do |pixel|
-      # color => "#5E5E9B9B7E7E" or "black", etc
-      color = pixel.to_color
-      next if IGNORE_COLORS.any? { |name| color.include? name }
+      hsla = pixel.to_hsla
 
-      r << color[1..2].hex
-      g << color[5..6].hex
-      b << color[9..10].hex
+      next if hsla[0] == 0.0
+
+      h << hsla[0]
+      s << hsla[1]
+      l << hsla[2]
     end
-    [r.sum / r.count, g.sum / g.count, b.sum / b.count]
+    return [0, 0, 0] if h.empty?
+    [h.sum / h.count, s.sum / s.count, l.sum / l.count]
   rescue => e
     puts row, column
     raise e
