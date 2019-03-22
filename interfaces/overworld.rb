@@ -27,16 +27,19 @@ class Overworld < Interface
     end
   end
 
-  MAX_TRAVEL = 400
+  def max_travel
+    @max_travel ||= 250 + 100 * $adventurer.survival
+  end
+
   def nearby_towns
     @nearby_towns ||= towns.select do |town|
-      Distance.between(town.location, @location.location) <= MAX_TRAVEL
+      Distance.between(town.location, @location.location) <= max_travel
     end
   end
 
   def far_towns
     @far_towns ||= towns.select do |town|
-      Distance.between(town.location, @location.location) > MAX_TRAVEL
+      Distance.between(town.location, @location.location) > max_travel
     end
   end
 

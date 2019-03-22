@@ -36,5 +36,3 @@ class TownPlacer
     Distance.to_nearest_town(location) < MIN_DISTANCE
   end
 end
-
-
