@@ -2,6 +2,7 @@ require 'gosu'
 require_relative 'state/state'
 
 class MainScreen < Gosu::Window
+  WINDOW_SIZE = 1024
   attr_accessor :on_button_down
 
   def self.turn_on!
@@ -11,7 +12,7 @@ class MainScreen < Gosu::Window
   end
 
   def initialize
-    super 1024, 1024
+    super WINDOW_SIZE, WINDOW_SIZE
     self.caption = 'The Ruby Trader'
     @elements = []
   end

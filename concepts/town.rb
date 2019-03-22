@@ -1,13 +1,13 @@
 require_relative './market'
-
-MAP_RANGE = 200..800
+require_relative '../utilities/town_placer'
 
 class Town
   attr_accessor :name, :population, :location
   def initialize name, population: nil, location: nil
     @name = name
     @population = population || rand(2000)
-    @location = location || [rand(MAP_RANGE), rand(MAP_RANGE)]
+    pp @name
+    @location = location || TownPlacer.new_location
   end
 
   def key

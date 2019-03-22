@@ -25,5 +25,9 @@ class MapReader
       b << color[9..10].hex
     end
     [r.sum / r.count, g.sum / g.count, b.sum / b.count]
+  rescue => e
+    puts color
+    puts row, column
+    raise e
   end
 end
