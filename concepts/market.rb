@@ -1,14 +1,16 @@
 class Market
-  GOODS = [
-    :rubies,
-    :wheat,
-    :hide,
-    :silver,
-    :cloth,
-    :tools,
-    :relics,
-    :food
-  ]
+  GOODS_TABLE = {
+    # key: [base_price, illegal]
+    rubies: [1000, false],
+    wheat: [5, false],
+    hide: [45, false],
+    silver: [190, false],
+    cloth: [30, false],
+    tools: [95, false],
+    relics: [500, false],
+    food: [3, false]
+  }
+  GOODS = GOODS_TABLE.keys
   attr_accessor *GOODS
   attr_reader :town
 
@@ -61,15 +63,19 @@ class Market
 
   def populate
     GOODS.each do |good|
-      instance_variable_set "@#{good}", { price: generate_price, quantity: generate_quantity }
+      price = generate_price good
+      quantity = generate_quantity price
+      instance_variable_set "@#{good}", { price: price, quantity: quantity }
     end
   end
 
-  def generate_price
-    [rand(town.population) / 10, 1].max
+  def generate_price good
+    base_price = GOODS_TABLE[good][0]
+    [base_price * (1 + rand - rand), 1].max.to_i
   end
 
-  def generate_quantity
-    [rand(town.population) - 30, 0].max
+  def generate_quantity price
+    divisor = [price, 6].max
+    (rand(town.population) / (divisor / 3.0) * (1 - rand)).to_i
   end
 end
