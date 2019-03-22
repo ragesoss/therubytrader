@@ -18,7 +18,7 @@ class InTown < Interface
   end
 
   def draw
-    @background.draw 360, 100, 0
+    @background.draw 500, 100, 0
     @greeting&.draw 10, 10, 0
     @description.draw 10, 50, 0
     @prompt.draw 10, 90, 0
