@@ -31,11 +31,16 @@ class Market
     send(good)[:quantity].positive?
   end
 
+  def sell_price good
+    spread_rate = (100 - 10 + $adventurer.streetwise) / 100.0
+    (price(good) * spread_rate).round
+  end
+
   def buy_options
     options = []
     GOODS.each do |good|
       next unless available? good
-      price = send(good)[:price]
+      price = price good
       quantity = send(good)[:quantity]
       options << ["buy_#{good}", "#{good}: #{price} cp (#{quantity} available)"]
     end
@@ -45,7 +50,7 @@ class Market
 
   def sell_options
     GOODS.to_h do |good|
-      price = send(good)[:price]
+      price = sell_price good
       quantity = $adventurer.inventory.goods[good]
       ["sell_#{good}", "#{good}: #{price} cp (#{quantity} owned)"]
     end.merge({ shop: "Done selling" })
