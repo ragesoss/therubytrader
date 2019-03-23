@@ -24,10 +24,10 @@ class Overworld < Interface
     set_actions
   end
 
-  TOWN_NAMES = %w[Flossvale Chard Juniper Palmatum Sessa Scond Quercus Mume
-                  Salix Ophrys Trias Rana Vanda Erycina Govenia Garaya Holopogon
-                  Isotria Lanium Macodes Mixis Panisea Podangis Risleya Stenia
-                  Trias Yoania Orchedo]
+  TOWN_NAMES = %w[Chard Erycina Flossvale Govenia Garaya Holopogon Isotria
+                  Juniper Lanium Macodes Mixis Mume Ophrys Orchedo Palmatum
+                  Panisea Podangis Quercus Rana Risleya Salix Scond Sessa
+                  Stenia Trias Vanda Yoania]
   def towns
     @towns ||= TOWN_NAMES.map do |town_name|
       $state[:towns][town_name.downcase.to_sym] ||= Town.new(town_name)
