@@ -7,7 +7,7 @@ class Market
     silver: [190, false],
     cloth: [30, false],
     tools: [95, false],
-    relics: [500, false],
+    relics: [500, true],
     food: [3, false]
   }
   GOODS = GOODS_TABLE.keys

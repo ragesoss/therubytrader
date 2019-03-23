@@ -2,11 +2,13 @@ require_relative './market'
 require_relative '../utilities/town_placer'
 
 class Town
-  attr_accessor :name, :population, :location
-  def initialize name, population: nil, location: nil
+  attr_accessor :name, :population, :location, :biome
+  def initialize name, population: nil, location: nil, biome: nil
     @name = name
     @population = population || rand(2000)
     @location = location || TownPlacer.new_location
+    @biome = TownPlacer.biome @location
+    @hls = TownPlacer.map_reader.average_value *@location
   end
 
   def key
