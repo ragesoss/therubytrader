@@ -39,12 +39,11 @@ class Town
   # as well as the ratio between the window and the map image
   BULLET_OFFSET_X = -2
   BULLET_OFFSET_Y = -12
-  WINDOW_TO_MAP_RATIO = 0.5
   def lat
-    @lat ||= (BULLET_OFFSET_X + true_lat * WINDOW_TO_MAP_RATIO).to_i
+    @lat ||= (BULLET_OFFSET_X + true_lat * MAP_RATIO).to_i
   end
 
   def long
-    @long ||= (BULLET_OFFSET_Y + true_long * WINDOW_TO_MAP_RATIO).to_i
+    @long ||= (BULLET_OFFSET_Y + true_long * MAP_RATIO).to_i
   end
 end

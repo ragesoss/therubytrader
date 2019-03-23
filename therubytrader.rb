@@ -1,8 +1,10 @@
 require 'gosu'
 require_relative 'state/state'
 
+WINDOW_SIZE = 1440
+MAP_RATIO = 1440 / 2048.to_f
+
 class MainScreen < Gosu::Window
-  WINDOW_SIZE = 1024
   attr_accessor :on_button_down
 
   def self.turn_on!

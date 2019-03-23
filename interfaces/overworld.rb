@@ -65,7 +65,7 @@ class Overworld < Interface
   ACTIVE_SIZE = 30
   INACTIVE_SIZE = 20
   def draw
-    @background.draw 0, 0, 0, 0.5, 0.5
+    @background.draw 0, 0, 0, MAP_RATIO, MAP_RATIO
     @greeting.draw 10, 10, 0
 
     @far_towns_draw.each do |town, label|
