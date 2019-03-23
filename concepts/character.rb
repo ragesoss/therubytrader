@@ -1,4 +1,5 @@
 require_relative './skills'
+require_relative '../utilities/words'
 
 class Character
   attr_accessor :name, :life, :money, :inventory
@@ -26,5 +27,17 @@ class Character
 
   def dead?
     !alive?
+  end
+
+  def loot
+    contents = ["#{money} #{MONEY}"]
+    return contents.first unless inventory
+
+    inventory.goods.each do |good, count|
+      next unless count.positive?
+
+      contents << "#{count} #{good}"
+    end
+    Words.comma_list contents
   end
 end

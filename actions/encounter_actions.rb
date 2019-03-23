@@ -1,5 +1,6 @@
 require_relative '../concepts/enemies/goblin'
 require_relative '../concepts/enemies/ogre'
+require_relative '../concepts/enemies/gargoyle'
 
 class EncounterActions < Action
   def self.fight enemy
@@ -28,14 +29,20 @@ class EncounterActions < Action
 
   def self.pick_monster
     case rand(100)
-    when 0..85
+    when 0..80
       Goblin.new
-    when 86..100
+    when 81..93
+      Gargoyle.new
+    when 94..100
       Ogre.new
     end
   end
 
   def self.loot_body character
     $adventurer.money += character.money
+    return unless character.inventory
+    character.inventory.goods.each do |good, number|
+      $adventurer.inventory.add good, number
+    end
   end
 end

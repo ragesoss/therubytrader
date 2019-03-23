@@ -1,7 +1,7 @@
 class Inventory
   attr_accessor :goods
-  def initialize goods
-    @goods = goods
+  def initialize
+    @goods = Hash.new 0
   end
 
   def add(good, quantity)

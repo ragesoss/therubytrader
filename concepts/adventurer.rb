@@ -7,7 +7,7 @@ class Adventurer < Character
     @max_life = 20
     @life = 20
     @money = 100
-    @inventory = Inventory.new(Hash.new 0)
+    @inventory = Inventory.new
 
     SKILLS.each do |skill|
       send("#{skill}=", 1)

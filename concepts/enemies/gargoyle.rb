@@ -1,11 +1,11 @@
 require_relative '../character'
 
-class Goblin < Character
+class Gargoyle < Character
   def initialize
-    @life = rand(2..7)
-    @money = rand(5)
+    @life = rand(7..15)
+    @money = 2
     @inventory = Inventory.new
-    @inventory.add(:food, rand(3)) if rand > 0.6
+    @inventory.add(:relics, 1) if rand > 0.95
 
     SKILLS.each do |skill|
       send("#{skill}=", 1)
@@ -13,14 +13,14 @@ class Goblin < Character
   end
 
   def name
-    'a goblin'
+    'a gargoyle'
   end
 
   def specific_name
-    'the goblin'
+    'the gargoyle'
   end
 
   def damage_range
-    0..2
+    0..4
   end
 end
