@@ -8,7 +8,7 @@ class Town
     @population = population || rand(2000)
     @location = location || TownPlacer.new_location
     @biome = TownPlacer.biome @location
-    @hls = TownPlacer.map_reader.average_value *@location
+    @hsl = TownPlacer.map_reader.average_value *@location
   end
 
   def key
