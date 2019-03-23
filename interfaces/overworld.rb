@@ -3,6 +3,7 @@ require_relative '../actions/travel_actions'
 YELLOW = Gosu::Color.argb(0xff_ffd972)
 WHITE = Gosu::Color.argb(0xff_ffffff)
 GRAY = Gosu::Color.argb(0xff_808080)
+LIGHT_GRAY = Gosu::Color.argb(0xff_cccccc)
 BLACK = Gosu::Color.argb(0xff_000000)
 
 class Overworld < Interface
@@ -68,7 +69,7 @@ class Overworld < Interface
     @greeting.draw 10, 10, 0
 
     @far_towns_draw.each do |town, label|
-      label.draw town.lat, town.long, 2, 1, 1, GRAY
+      label.draw town.lat, town.long, 2, 1, 1, LIGHT_GRAY
       label.draw town.lat + 1, town.long + 1, 1, 1, 1, BLACK
     end
 

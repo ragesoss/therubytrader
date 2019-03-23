@@ -44,9 +44,8 @@ class Encounter < Interface
 
   def run
     result = EncounterActions.run_from @enemy
-    if result.success?
-      set_escape
-    end
+    set_escape if result.success?
+    set_defeat if $adventurer.dead?
     update_status
   end
 
