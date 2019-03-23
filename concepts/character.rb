@@ -29,6 +29,10 @@ class Character
     !alive?
   end
 
+  def image
+    nil
+  end
+
   def loot
     contents = ["#{money} #{MONEY}"]
     return contents.first unless inventory

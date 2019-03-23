@@ -11,6 +11,10 @@ class Ogre < Character
     end
   end
 
+  def image
+    @image ||= Gosu::Image.new('media/ogre.png')
+  end
+
   def name
     'an ogre'
   end
