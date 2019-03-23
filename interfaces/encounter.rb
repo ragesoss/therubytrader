@@ -1,6 +1,4 @@
 require_relative '../actions/encounter_actions'
-require_relative '../concepts/enemies/goblin'
-
 class Encounter < Interface
   attr_reader :destination, :distance_remaining
 
@@ -8,9 +6,10 @@ class Encounter < Interface
     @destination = destination
     @distance_remaining = distance_remaining
 
-    @enemy = Goblin.new
-    @description = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, you encounter a goblin!", 30)
+    @enemy = EncounterActions.pick_monster
+    @description = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, you encounter #{@enemy.name}!", 30)
     set_fight_options
+    update_status
     @selected_option = 0
     setup_input_handling
   end
@@ -23,6 +22,9 @@ class Encounter < Interface
   end
 
   def update
+  end
+
+  def update_status
     if $adventurer.dead?
       @status = Gosu::Image.from_text("You have have died!", 30)
     elsif @enemy.alive?
@@ -31,14 +33,13 @@ class Encounter < Interface
       @status = Gosu::Image.from_text("You have #{$adventurer.life} life, and the enemy is dead.", 30)
     end
   end
- 
+
   def fight
     result = EncounterActions.fight @enemy
-    if result.success?
-      set_victory
-    elsif $adventurer.dead?
-      set_defeat
-    end
+
+    return set_victory if result.success?
+    set_defeat if $adventurer.dead?
+    update_status
   end
 
   def run
@@ -46,6 +47,7 @@ class Encounter < Interface
     if result.success?
       set_escape
     end
+    update_status
   end
 
   def draw
@@ -81,8 +83,10 @@ class Encounter < Interface
   end
 
   def set_victory
+    EncounterActions.loot_body @enemy
+    @status = Gosu::Image.from_text("You defeated #{@enemy.specific_name}! Your foe had #{@enemy.money} #{MONEY}.", 30)
     @options = {
-      continue_on: "You've won the fight! Continue the journey to #{destination.name}."
+      continue_on: "Continue the journey to #{destination.name}."
     }
     @selected_option = 0
   end

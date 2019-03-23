@@ -1,3 +1,6 @@
+require_relative '../concepts/enemies/goblin'
+require_relative '../concepts/enemies/ogre'
+
 class EncounterActions < Action
   def self.fight enemy
     if hit? enemy
@@ -21,5 +24,18 @@ class EncounterActions < Action
 
   def self.hit? character
     rand > character.evasion_chance
+  end
+
+  def self.pick_monster
+    case rand(100)
+    when 0..85
+      Goblin.new
+    when 86..100
+      Ogre.new
+    end
+  end
+
+  def self.loot_body character
+    $adventurer.money += character.money
   end
 end

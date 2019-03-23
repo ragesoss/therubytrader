@@ -19,7 +19,7 @@ class Character
   def take_damage amount
     @life -= amount
   end
-  
+
   def alive?
     @life.positive?
   end
