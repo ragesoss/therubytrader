@@ -1,15 +1,5 @@
+require_relative './goods_table'
 class Market
-  GOODS_TABLE = {
-    # key: [base_price, illegal]
-    rubies: [1000, false],
-    wheat: [5, false],
-    hide: [45, false],
-    silver: [190, false],
-    cloth: [30, false],
-    tools: [95, false],
-    relics: [500, true],
-    food: [3, false]
-  }
   GOODS = GOODS_TABLE.keys
   attr_accessor *GOODS
   attr_reader :town
