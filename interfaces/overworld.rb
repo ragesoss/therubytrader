@@ -24,15 +24,8 @@ class Overworld < Interface
     set_actions
   end
 
-  TOWN_NAMES = %w[Abelmoschus Anthemis Apium Brassica Carpinus Erycina Flossvale
-                  Govenia Garaya Holopogon Isotria Lanium Larix Macodes Mixis
-                  Mume Olea Ophrys Orchedo Palmatum Panisea Passiflora Podangis
-                  Quercus Rana Risleya Salix Solanum Stenia Thuja Trias Vanda
-                  Yoania]
   def towns
-    @towns ||= TOWN_NAMES.map do |town_name|
-      $state[:towns][town_name.downcase.to_sym] ||= Town.new(town_name)
-    end
+    $state[:towns].values
   end
 
   def max_travel

@@ -23,9 +23,8 @@ class WhatIsYourStrongestSkill < Interface
         $adventurer.change_skill SKILLS[@selected_skill_index], 2
         unset_button_down
         destroy
-        starting_town = Town.new('Flossvale')
+        starting_town = $state[:towns][:flossvale]
         InTown.new(starting_town, { greeting: welcome_message }).create
-        $state[:towns] = { flossvale: starting_town }
       end
     end
   end

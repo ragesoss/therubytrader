@@ -1,4 +1,5 @@
 require_relative '../interfaces/what_is_your_name'
+require_relative '../utilities/town_placer'
 
 class State
   def self.start
@@ -7,6 +8,7 @@ class State
       InTown.new(location).create
     else
       $state = {}
+      TownPlacer.generate_towns
       WhatIsYourName.new.create
     end
   end

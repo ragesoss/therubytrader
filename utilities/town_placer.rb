@@ -27,6 +27,18 @@ class TownPlacer
     tropical_seasonal_forest: "#559944"
   }
 
+  TOWN_NAMES = %w[Abelmoschus Anthemis Apium Brassica Carpinus Erycina Flossvale
+                  Govenia Garaya Holopogon Isotria Lanium Larix Macodes Mixis
+                  Mume Olea Ophrys Orchedo Palmatum Panisea Passiflora Podangis
+                  Quercus Rana Risleya Salix Solanum Stenia Thuja Trias Vanda
+                  Yoania]
+  def self.generate_towns
+    $state[:towns] = {}
+    TOWN_NAMES.each do |town_name|
+      $state[:towns][town_name.downcase.to_sym] = Town.new(town_name)
+    end
+  end
+
   def self.map_reader
     @map_reader ||= MapReader.new 'media/overworld-base.png'
   end
@@ -54,7 +66,7 @@ class TownPlacer
 
   MIN_DISTANCE = 180
   def self.too_close_to_another_town? location
-    return false if $state[:towns].nil?
+    return false if $state[:towns].empty?
 
     return false if rand(8) == 0 # allow a few too-close towns: twin cities
     Distance.to_nearest_town(location) < MIN_DISTANCE
