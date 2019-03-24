@@ -4,22 +4,16 @@ require_relative '../concepts/enemies/gargoyle'
 
 class EncounterActions < Action
   def self.fight enemy
-    if hit? enemy
-      enemy.take_damage $adventurer.damage
-    end
-    return success unless enemy.alive?
-    if hit? $adventurer
-      $adventurer.take_damage enemy.damage
-    end
-    return failure
+    FightRound.new(enemy).call
   end
 
   def self.run_from enemy
     if hit? $adventurer
-      $adventurer.take_damage enemy.damage
-      return failure
+      damage = enemy.damage
+      $adventurer.take_damage damage
+      return failure("You can't get away! You were hit, and you lost #{damage} life.")
     else
-      return success
+      return success("You got away!")
     end
   end
 
@@ -43,6 +37,44 @@ class EncounterActions < Action
     return unless character.inventory
     character.inventory.goods.each do |good, number|
       $adventurer.inventory.add good, number
+    end
+  end
+
+  class FightRound
+    def initialize enemy
+      @enemy = enemy
+    end
+
+    def call
+      @hit_enemy = EncounterActions.hit? @enemy
+      if @hit_enemy
+        @damage_dealt = $adventurer.damage
+        @enemy.take_damage @damage_dealt
+      end
+      return EncounterActions.success(result) unless @enemy.alive?
+      @hit_adventurer = EncounterActions.hit? $adventurer
+      if @hit_adventurer
+        @damage_taken = @enemy.damage
+        $adventurer.take_damage @damage_taken
+      end
+      return EncounterActions.failure(result)
+    end
+
+    def result
+      @result = String.new
+      if @hit_enemy
+        @result += "You hit for #{@damage_dealt}. "
+      else
+        @result += "You missed. "
+      end
+
+      if @enemy.dead?
+        @result += "You killed #{@enemy.specific_name}!"
+      elsif @hit_adventurer
+        @result += "The enemy hit you for #{@damage_taken}."
+      else
+        @result += "The enemy missed."
+      end
     end
   end
 end

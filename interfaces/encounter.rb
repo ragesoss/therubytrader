@@ -36,7 +36,7 @@ class Encounter < Interface
 
   def fight
     result = EncounterActions.fight @enemy
-
+    @result = Gosu::Image.from_text(result.text, 30)
     return set_victory if result.success?
     set_defeat if $adventurer.dead?
     update_status
@@ -53,6 +53,7 @@ class Encounter < Interface
     @description.draw 10, 50, 0
     @status.draw 10, 100, 0
     @enemy.image&.draw 800, 100, 0
+    @result&.draw 10, 640, 0
     @options.each.with_index do |option, i|
       style = @selected_option == i ? { bold: true } : {}
       Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 50*i, 0
