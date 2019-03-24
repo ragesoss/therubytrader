@@ -15,9 +15,6 @@ class InTown < Interface
     setup_input_handling
   end
 
-  def update
-  end
-
   def draw
     @background.draw 500, 100, 0
     @greeting&.draw 10, 10, 0
@@ -53,7 +50,7 @@ class InTown < Interface
       @options = @options.merge(quest.options)
       quest.options.keys.each do |action|
         define_singleton_method(action) do
-          result = quest.send(action)
+          result = quest.send(action, self)
           @quests = town.quests
           set_overview Gosu::Image.from_text(result, 30)
         end

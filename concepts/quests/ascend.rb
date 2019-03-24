@@ -1,4 +1,5 @@
 require_relative '../quest'
+require_relative '../../interfaces/ascension'
 
 class Ascend < Quest
   def requirements_met?
@@ -10,8 +11,10 @@ class Ascend < Quest
     { complete: "Use your horde of rubies to ascend into immortality." }
   end
 
-  def complete
+  def complete interface
     $state[:towns][place].quests -= [self]
+    interface.destroy
+    Ascension.new.create
     "You have ascended!"
   end
 end
