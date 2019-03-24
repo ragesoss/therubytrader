@@ -1,33 +1,9 @@
 require_relative './map_reader.rb'
 require_relative '../concepts/quests/ascend'
+require_relative '../concepts/biome'
 
 class TownPlacer
   MAP_RANGE = 1..2000
-  # adapted from https://www.redblobgames.com/maps/mapgen2/colormap.js
-  BIOME_COLORS = {
-    ocean: "#44447a",
-    ocean_border: "#33335a",
-    lakeshore: "#225588",
-    lake: "#336699",
-    river: "#225588",
-    marsh: "#2f6666",
-    glacier: "#99ffff",
-    coast: "#a09077",
-    snow: "#ffffff",
-    tundra: "#bbbbaa",
-    wasteland: "#888888",
-    mountain: "#555555",
-    taiga: "#99aa77",
-    shrubland: "#889977",
-    temperate_desert: "#c9d29b",
-    temperate_rain_forest: "#448855",
-    temperate_deciduous_forest: "#679459",
-    grassland: "#88aa55",
-    subtropical_desert: "#d2b98b",
-    tropical_rain_forest: "#337755",
-    tropical_seasonal_forest: "#559944"
-  }
-
   TOWN_NAMES = %w[Abelmoschus Anthemis Apium Brassica Carpinus Erycina Flossvale
                   Govenia Garaya Holopogon Isotria Lanium Larix Macodes Mixis
                   Mume Olea Ophrys Orchedo Palmatum Panisea Passiflora Podangis
@@ -63,7 +39,7 @@ class TownPlacer
   end
 
   def self.ocean_color? color
-    map_reader.basically_the_same_colors? color, BIOME_COLORS[:ocean]
+    map_reader.basically_the_same_colors? color, Biome::COLORS[:ocean]
   end
 
   MIN_DISTANCE = 180
@@ -76,7 +52,7 @@ class TownPlacer
 
   def self.biome location
     color = map_reader.color(*location)
-    BIOME_COLORS.each do |biome, hex_color|
+    Biome::COLORS.each do |biome, hex_color|
       return biome if map_reader.basically_the_same_colors? color, hex_color
     end
     :unknown

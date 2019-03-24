@@ -6,7 +6,7 @@ class Encounter < Interface
     @destination = destination
     @distance_remaining = distance_remaining
 
-    @enemy = EncounterActions.pick_monster
+    @enemy = EncounterActions.pick_monster(@destination)
     @description = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, you encounter #{@enemy.name}!", 30)
     set_fight_options
     update_status

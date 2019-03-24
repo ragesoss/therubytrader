@@ -21,15 +21,8 @@ class EncounterActions < Action
     rand > character.evasion_chance
   end
 
-  def self.pick_monster
-    case rand(100)
-    when 0..80
-      Goblin.new
-    when 81..93
-      Gargoyle.new
-    when 94..100
-      Ogre.new
-    end
+  def self.pick_monster destination
+    destination.biome.random_encounter
   end
 
   def self.loot_body character

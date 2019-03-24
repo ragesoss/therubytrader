@@ -3,7 +3,7 @@ require_relative '../utilities/town_placer'
 require_relative './place'
 
 class Town < Place
-  attr_accessor :population, :biome
+  attr_accessor :population
   def initialize name, population: nil, location: nil, biome: nil
     @name = name
     @population = population || rand(2000)
