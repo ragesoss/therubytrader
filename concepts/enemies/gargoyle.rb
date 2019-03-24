@@ -12,6 +12,10 @@ class Gargoyle < Character
     end
   end
 
+  def image
+    @image ||= Gosu::Image.new('media/gargoyle.png')
+  end
+
   def name
     'a gargoyle'
   end
