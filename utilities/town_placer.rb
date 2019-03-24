@@ -1,4 +1,5 @@
 require_relative './map_reader.rb'
+require_relative '../concepts/quests/ascend'
 
 class TownPlacer
   MAP_RANGE = 1..2000
@@ -37,6 +38,7 @@ class TownPlacer
     TOWN_NAMES.each do |town_name|
       $state[:towns][town_name.downcase.to_sym] = Town.new(town_name)
     end
+    $state[:towns][:palmatum].quests = [Ascend.new(:palmatum)]
   end
 
   def self.map_reader

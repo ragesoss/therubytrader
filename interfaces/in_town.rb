@@ -7,6 +7,7 @@ class InTown < Interface
   def initialize town, options = {}
     $state[:location] = town.key
     @town = town
+    @quests = town.quests || []
     @background = Gosu::Image.new('media/town-small.png')
     update_greeting options[:greeting]
     @description = Gosu::Image.from_text(town.describe, 30)
@@ -43,11 +44,22 @@ class InTown < Interface
     talk: "Talk with the townsfolk",
     leave: "Travel on"
   }
-  def set_overview
+  def set_overview result = nil
+    @result = result
     @prompt = Gosu::Image.from_text('What will you do?', 30)
     @selected_option = 0
     @options = OVERVIEW_ACTIONS
-    @result = nil
+    @quests.each do |quest|
+      @options = @options.merge(quest.options)
+      quest.options.keys.each do |action|
+        define_singleton_method(action) do
+          result = quest.send(action)
+          @quests = town.quests
+          set_overview Gosu::Image.from_text(result, 30)
+        end
+      end
+    end
+
   end
 
   def rest
