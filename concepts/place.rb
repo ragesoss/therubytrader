@@ -1,3 +1,5 @@
+require_relative 'biomes/coast'
+
 class Place
   attr_accessor :name, :location, :quests
 

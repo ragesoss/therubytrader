@@ -24,18 +24,34 @@ class Biome
     tropical_seasonal_forest: "#559944"
   }
 
-  def self.random_encounter
-    case rand(100)
-    when 0..80
-      Goblin.new
-    when 81..93
-      Gargoyle.new
-    when 94..100
-      Ogre.new
-    end
+  def self.bag_of_monsters
+    @bag_of_monsters ||= fill_bag
   end
 
+  def self.fill_bag
+    bag = []
+    monster_table.each do |monster, count|
+      count.times { bag << monster }
+    end
+    bag
+  end
+
+  def self.monster_table
+    {
+      goblin: 14,
+      gargoyle: 2,
+      ogre: 1
+    }
+  end
+
+  def self.random_encounter
+    monster = bag_of_monsters.sample
+    Object.const_get(Words.classname(monster)).new
+  end
+
+  IMPLEMENTED = [:coast]
   COLORS.keys.each do |biome|
+    next if IMPLEMENTED.include? biome
     Object.const_set Words.classname(biome), Class.new(Biome)
   end
   Object.const_set Words.classname(:unknown_biome), Class.new(Biome)
