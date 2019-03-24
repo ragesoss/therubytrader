@@ -4,4 +4,8 @@ class Words
 
     strings[0..-2].join(', ') << " and " << strings[-1]
   end
+
+  def self.classname symbol
+    symbol.to_s.split('_').map { |word| word.capitalize }.join
+  end
 end

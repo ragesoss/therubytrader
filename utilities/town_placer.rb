@@ -55,6 +55,6 @@ class TownPlacer
     Biome::COLORS.each do |biome, hex_color|
       return biome if map_reader.basically_the_same_colors? color, hex_color
     end
-    :unknown
+    :unknown_biome
   end
 end

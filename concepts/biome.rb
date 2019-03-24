@@ -36,6 +36,7 @@ class Biome
   end
 
   COLORS.keys.each do |biome|
-    Object.const_set biome.capitalize, Class.new(Biome)
+    Object.const_set Words.classname(biome), Class.new(Biome)
   end
+  Object.const_set Words.classname(:unknown_biome), Class.new(Biome)
 end
