@@ -39,11 +39,15 @@ class Market
   end
 
   def sell_options
-    GOODS.to_h do |good|
-      price = sell_price good
+    options = []
+    GOODS.each do |good|
       quantity = $adventurer.inventory.goods[good]
-      ["sell_#{good}", "#{good}: #{price} cp (#{quantity} owned)"]
-    end.merge({ shop: "Done selling" })
+      next unless quantity.positive?
+      price = sell_price good
+      options << ["sell_#{good}", "#{good}: #{price} cp (#{quantity} owned)"]
+    end
+    options << [:shop, "Done selling" ]
+    options.to_h
   end
 
   def add good, quantity

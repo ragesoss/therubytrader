@@ -16,14 +16,14 @@ class InTown < Interface
   end
 
   def draw
-    @background.draw 500, 100, 0
+    @background.draw 800, 100, 0
     @greeting&.draw 10, 10, 0
     @description.draw 10, 50, 0
     @prompt.draw 10, 90, 0
     @result&.draw 10, 640, 0
     @options.each.with_index do |option, i|
-      style = @selected_option == i ? { bold: true } : {}
-      Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 50*i, 0
+      style = @selected_option == i ? { bold: true, width: 600 } : { width: 600 }
+      Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 60*i, 0
     end
   end
 
