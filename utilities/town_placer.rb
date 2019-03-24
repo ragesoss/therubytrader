@@ -2,6 +2,30 @@ require_relative './map_reader.rb'
 
 class TownPlacer
   MAP_RANGE = 1..2000
+  # adapted from https://www.redblobgames.com/maps/mapgen2/colormap.js
+  BIOME_COLORS = {
+    ocean: "#44447a",
+    ocean_border: "#33335a",
+    lakeshore: "#225588",
+    lake: "#336699",
+    river: "#225588",
+    marsh: "#2f6666",
+    glacier: "#99ffff",
+    coast: "#a09077",
+    snow: "#ffffff",
+    tundra: "#bbbbaa",
+    wasteland: "#888888",
+    mountain: "#555555",
+    taiga: "#99aa77",
+    shrubland: "#889977",
+    temperate_desert: "#c9d29b",
+    temperate_rain_forest: "#448855",
+    temperate_deciduous_forest: "#679459",
+    grassland: "#88aa55",
+    subtropical_desert: "#d2b98b",
+    tropical_rain_forest: "#337755",
+    tropical_seasonal_forest: "#559944"
+  }
 
   def self.map_reader
     @map_reader ||= MapReader.new 'media/overworld-base.png'
@@ -10,8 +34,8 @@ class TownPlacer
   def self.new_location
     location = random_location
 
-    hsl = map_reader.average_value *location
-    if water_color? *hsl
+    color = map_reader.color *location
+    if ocean_color? color
       return new_location
     elsif too_close_to_another_town? location
       return new_location
@@ -24,8 +48,8 @@ class TownPlacer
     [rand(MAP_RANGE), rand(MAP_RANGE)]
   end
 
-  def self.water_color? h, s, l
-    (239..241).cover? h
+  def self.ocean_color? color
+    map_reader.basically_the_same_colors? color, BIOME_COLORS[:ocean]
   end
 
   MIN_DISTANCE = 180
@@ -37,27 +61,10 @@ class TownPlacer
   end
 
   def self.biome location
-    h, s, l = *map_reader.average_value(*location)
-    if h < 10
-      :mountain
-    elsif (h > 85) && (h < 96) && (s > 35) && (s < 45) && (l > 100)
-      :badlands
-    elsif (h < 80) && (s > 40) && (s < 60) && (l > 90)
-      :coast
-    elsif (h < 50) && (l > 130)
-      :desert
-    elsif (h > 60) && (h < 110) && (l > 150)
-      :grassland
-    elsif (h > 60) && (h < 160) & (l > 45)
-      :forest
-    elsif (h > 130) && (h < 160) && (l < 70)
-      :jungle
-    elsif (h > 200) && (s > 100)
-      :lake
-    elsif (h > 160) && (l > 65)
-      :swamp
-    else
-      :unknown
+    color = map_reader.color(*location)
+    BIOME_COLORS.each do |biome, hex_color|
+      return biome if map_reader.basically_the_same_colors? color, hex_color
     end
+    :unknown
   end
 end
