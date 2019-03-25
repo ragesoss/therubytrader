@@ -33,6 +33,10 @@ class Character
     nil
   end
 
+  def money
+    @money || 0
+  end
+
   def loot
     contents = ["#{money} #{MONEY}"]
     return contents.first unless inventory
