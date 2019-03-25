@@ -3,7 +3,7 @@ class Biome
   COLORS = {
     ocean: "#44447a",
     ocean_border: "#33335a",
-    lakeshore: "#225588",
+    # lakeshore: "#225588",
     lake: "#336699",
     river: "#225588",
     marsh: "#2f6666",
@@ -49,7 +49,7 @@ class Biome
     Object.const_get(Words.classname(monster)).new
   end
 
-  IMPLEMENTED = [:coast]
+  IMPLEMENTED = [:coast, :grassland]
   COLORS.keys.each do |biome|
     next if IMPLEMENTED.include? biome
     Object.const_set Words.classname(biome), Class.new(Biome)

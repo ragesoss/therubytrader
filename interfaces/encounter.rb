@@ -1,4 +1,5 @@
 require_relative '../actions/encounter_actions'
+
 class Encounter < Interface
   attr_reader :destination, :distance_remaining
 
