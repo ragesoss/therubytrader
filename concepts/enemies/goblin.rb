@@ -12,8 +12,12 @@ class Goblin < Character
     end
   end
 
+  GOBLIN_IMAGES = [
+    'media/goblin.png',
+    'media/goblin2.png'
+  ]
   def image
-    @image ||= Gosu::Image.new('media/goblin.png')
+    @image ||= Gosu::Image.new(GOBLIN_IMAGES.sample)
   end
 
   def name
