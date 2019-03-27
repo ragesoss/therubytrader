@@ -53,7 +53,7 @@ class Biome
     'mysterious'
   end
 
-  IMPLEMENTED = %i[coast grassland marsh mountain]
+  IMPLEMENTED = %i[coast grassland marsh mountain river]
   COLORS.keys.each do |biome|
     next if IMPLEMENTED.include? biome
     Object.const_set Words.classname(biome), Class.new(Biome)
