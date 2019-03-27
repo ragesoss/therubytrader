@@ -4,10 +4,10 @@ require_relative '../concepts/biome'
 
 class TownPlacer
   MAP_RANGE = 1..2000
-  TOWN_NAMES = %w[Abelmoschus Anthemis Apium Brassica Carpinus Erycina Flossvale
-                  Govenia Garaya Holopogon Isotria Lanium Larix Macodes Mixis
-                  Mume Olea Ophrys Orchedo Palmatum Panisea Passiflora Podangis
-                  Quercus Rana Risleya Salix Solanum Stenia Thuja Trias Vanda
+  TOWN_NAMES = %w[Abelmoschus Anthemis Apium Artemisia Brassica Carpinus Erycina Flossvale
+                  Govenia Garaya Holopogon Isotria Lanium Larix Macodes Malus Mixis
+                  Mume Olea Ophiopogon Ophrys Orchedo Palmatum Panisea Passiflora Pimpinella Podangis
+                  Quercus Rana Risleya Salix Solanum Stenia Thuja Tradescantia Trias Vanda
                   Yoania]
   def self.generate_towns
     $state[:towns] = {}
