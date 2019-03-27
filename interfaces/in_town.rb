@@ -10,9 +10,13 @@ class InTown < Interface
     @quests = town.quests || []
     @background = Gosu::Image.new('media/town-small.png')
     update_greeting options[:greeting]
-    @description = Gosu::Image.from_text(town.describe, 30)
+    @description = Gosu::Image.from_text(description, 30)
     set_overview
     setup_input_handling
+  end
+
+  def description
+    "You're in #{town.description}."
   end
 
   def draw

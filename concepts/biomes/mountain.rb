@@ -16,4 +16,8 @@ class Mountain < Biome
       troll: 1
     }
   end
+
+  def self.adjective
+    'mountain'
+  end
 end

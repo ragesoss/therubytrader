@@ -13,4 +13,8 @@ class Grassland < Biome
       reaper: 1
     }
   end
+
+  def self.adjective
+    'grassland'
+  end
 end

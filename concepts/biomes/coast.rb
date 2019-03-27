@@ -13,4 +13,10 @@ class Coast < Biome
       ogre: 1
     }
   end
+
+  def self.adjective
+    'coastal'
+  end
 end
+
+OceanBorder = Coast

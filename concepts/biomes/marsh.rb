@@ -16,4 +16,8 @@ class Marsh < Biome
       reaper: 1
     }
   end
+
+  def self.adjective
+    'marsh'
+  end
 end

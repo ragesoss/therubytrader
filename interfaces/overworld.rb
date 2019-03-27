@@ -61,7 +61,8 @@ class Overworld < Interface
   def draw
     @background.draw 0, 0, 0, MAP_RATIO, MAP_RATIO
     @greeting.draw 10, 10, 0
-
+    selected_town = nearby_towns[@selected_option]
+    Gosu::Image.from_text(selected_town.description, 40).draw 10, 1350, 0
     @far_towns_draw.each do |town, label|
       label.draw town.lat, town.long, 2, 1, 1, LIGHT_GRAY
       label.draw town.lat + 1, town.long + 1, 1, 1, 1, BLACK

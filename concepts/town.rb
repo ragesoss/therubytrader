@@ -12,12 +12,12 @@ class Town < Place
     @color = TownPlacer.map_reader.color *@location
   end
 
-  def key
-    name.downcase.to_sym
+  def description
+    "#{name}, a #{biome.adjective} town of #{population}"
   end
 
-  def describe
-    "You're in #{name}, a town of #{population}."
+  def key
+    name.downcase.to_sym
   end
 
   def market

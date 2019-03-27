@@ -49,7 +49,11 @@ class Biome
     Object.const_get(Words.classname(monster)).new
   end
 
-  IMPLEMENTED = [:coast, :grassland]
+  def self.adjective
+    'mysterious'
+  end
+
+  IMPLEMENTED = %i[coast grassland marsh mountain]
   COLORS.keys.each do |biome|
     next if IMPLEMENTED.include? biome
     Object.const_set Words.classname(biome), Class.new(Biome)
