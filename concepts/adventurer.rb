@@ -37,4 +37,10 @@ class Adventurer < Character
   def damage_range
     0..3
   end
+
+  MAX_WEIGHT = 100
+  def encumbered?
+    pp inventory.weight
+    inventory.weight > MAX_WEIGHT
+  end
 end
