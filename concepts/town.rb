@@ -7,7 +7,7 @@ class Town < Place
   def initialize name, population: nil, location: nil, biome: nil
     @name = name
     @population = population || rand(2000)
-    @location = location || TownPlacer.new_location
+    @location = location || TownPlacer.new_location(required_biome: biome)
     @biome = TownPlacer.biome @location
     @color = TownPlacer.map_reader.color *@location
   end

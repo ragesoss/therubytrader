@@ -50,7 +50,7 @@ class Biome
   end
 
   def self.adjective
-    'mysterious'
+    self.to_s.downcase
   end
 
   IMPLEMENTED = %i[coast grassland marsh mountain river ocean_border]
