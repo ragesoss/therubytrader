@@ -15,7 +15,7 @@ class Adventurer < Character
   end
 
   def status
-    "You have #@life life. You have #@money #{MONEY}."
+    "You have #@life life. You have #@money #{MONEY}. Your pack weighs #{inventory.weight}."
   end
 
   def heal!
@@ -40,7 +40,6 @@ class Adventurer < Character
 
   MAX_WEIGHT = 100
   def encumbered?
-    pp inventory.weight
     inventory.weight > MAX_WEIGHT
   end
 end

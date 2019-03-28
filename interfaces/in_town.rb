@@ -113,7 +113,7 @@ class InTown < Interface
     if result.success?
       @result = Gosu::Image.from_text("You have #{$adventurer.money} #{MONEY} left.", 30)
     else
-      @result = Gosu::Image.from_text("Sorry, you don't have enough #{MONEY}.", 30)
+      @result = Gosu::Image.from_text(result.text, 30)
     end
     update_greeting
     buy_goods @selected_option # regenerates the options
