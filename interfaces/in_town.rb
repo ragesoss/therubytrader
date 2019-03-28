@@ -40,8 +40,8 @@ class InTown < Interface
   end
 
   OVERVIEW_ACTIONS = {
-    rest: "Rest at the inn",
     shop: "Visit the market",
+    rest: "Rest at the inn",
     talk: "Talk with the townsfolk",
     leave: "Travel on"
   }
