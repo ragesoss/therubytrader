@@ -1,5 +1,6 @@
 require_relative '../actions/market_actions'
 require_relative '../actions/inn_actions'
+require_relative './at_market'
 require_relative './overworld'
 
 class InTown < Interface
@@ -73,68 +74,15 @@ class InTown < Interface
     update_greeting
   end
 
-  SHOP_ACTIONS = {
-    buy_goods: "Buy goods",
-    sell_goods: "Sell goods",
-    leave_shop: "Leave"
-  }
-
   def shop
-    @prompt = Gosu::Image.from_text('You are in the market.', 30)
-    @result = nil
-    @selected_option = 0
-    @options = SHOP_ACTIONS
+    unset_button_down
+    destroy
+    AtMarket.new(town).create
   end
-
-
-  def buy_goods selected_option = 0
-    @prompt = Gosu::Image.from_text('What would you like to buy?', 30)
-    @selected_option = selected_option
-    @options = town.market.buy_options
-  end
-
-  def sell_goods selected_option = 0
-    @prompt = Gosu::Image.from_text('What would you like to sell?', 30)
-    @selected_option = selected_option
-    @options = town.market.sell_options
-  end
-
-  def leave_shop
-    set_overview
-  end
-
-  Market::GOODS.each do |good|
-    define_method("buy_#{good}") { buy good }
-    define_method("sell_#{good}") { sell good }
-  end
-
-  def buy good
-    result = MarketActions.buy good, town.market
-    if result.success?
-      @result = Gosu::Image.from_text("You have #{$adventurer.money} #{MONEY} left.", 30)
-    else
-      @result = Gosu::Image.from_text(result.text, 30)
-    end
-    update_greeting
-    buy_goods @selected_option # regenerates the options
-  end
-
-  def sell good
-    result = MarketActions.sell good, town.market
-    if result.success?
-      @result = Gosu::Image.from_text("Sold! You have #{$adventurer.money} #{MONEY}.", 30)
-    else
-      @result = Gosu::Image.from_text("You don't have any #{good} to sell.", 30)
-    end
-    update_greeting
-    sell_goods @selected_option # regenerates the options
-  end
-
 
   def talk
     @result = Gosu::Image.from_text("You chat with several passersby, but you learn nothing new.", 30)
   end
-
 
   def leave
     unset_button_down
