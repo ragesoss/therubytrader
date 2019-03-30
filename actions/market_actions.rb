@@ -1,7 +1,7 @@
 require_relative './action'
 
 class MarketActions < Action
-  def self.buy good, market
+  def self.buy good, market, max = false
     price = market.price good
     if !$adventurer.can_afford?(price)
       return failure("Sorry, you don't have enough #{MONEY}.")
@@ -10,22 +10,29 @@ class MarketActions < Action
     elsif $adventurer.encumbered?
       return failure("You're carrying too much already!")
     else
-      $adventurer.inventory.add good, 1
-      $adventurer.pay price
-      market.remove good, 1 
+      count = max ? max_buyable : 1
+      $adventurer.inventory.add good, count
+      $adventurer.pay(price*count)
+      market.remove good, count
       return success
     end
   end
 
-  def self.sell good, market
+  def self.max_buyable good, market, price
+    affordable = $adventurer.money / price
+    available = market.quantity good
+    carryable = $adventurer.carrying_capacity / market.weight(good)
+    [affordable, available, carryable].min
+  end
+
+  def self.sell good, market, max = false
     price = market.sell_price good
-    if $adventurer.inventory.goods[good] > 0
-      $adventurer.inventory.remove good, 1
-      $adventurer.get_paid price
-      market.add good, 1
-      return success
-    else
-      return failure
-    end
+    return failure if $adventurer.inventory.goods[good] <= 0
+
+    count = max ? $adventurer.inventory.goods[good] : 1
+    $adventurer.inventory.remove good, count
+    $adventurer.get_paid(price*count)
+    market.add good, count
+    return success
   end
 end

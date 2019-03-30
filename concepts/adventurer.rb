@@ -42,4 +42,8 @@ class Adventurer < Character
   def encumbered?
     inventory.weight > MAX_WEIGHT
   end
+
+  def carrying_capacity
+    MAX_WEIGHT - inventory.weight
+  end
 end

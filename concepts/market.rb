@@ -13,8 +13,12 @@ class Market
     send(good)[:price]
   end
 
-  def qauntity good
+  def quantity good
     send(good)[:quantity]
+  end
+
+  def weight good
+    GOODS_TABLE[good][2]
   end
 
   def available? good

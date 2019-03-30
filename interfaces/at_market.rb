@@ -20,7 +20,7 @@ class AtMarket < Interface
     @greeting&.draw 10, 10, 0
     @description.draw 10, 50, 0
     @prompt&.draw 10, 90, 0
-    @result&.draw 10, 640, 0
+    @result&.draw 10, 700, 0
     @options.each.with_index do |option, i|
       style = @selected_option == i ? { bold: true, width: 600 } : { width: 600 }
       Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 60*i, 0
@@ -101,6 +101,8 @@ class AtMarket < Interface
   def setup_input_handling
     set_button_down do |id|
       case id
+      when Gosu::KB_LEFT, Gosu::KB_RIGHT
+        @max = !@max
       when Gosu::KB_DOWN
         @selected_option = (@selected_option + 1) % @options.length
       when Gosu::KB_UP
