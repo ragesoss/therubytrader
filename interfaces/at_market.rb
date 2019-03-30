@@ -11,6 +11,10 @@ class AtMarket < Interface
     setup_input_handling
   end
 
+  def max?
+    @secondary_option_selected
+  end
+
   def description
     "You're in the #{town.name} market."
   end
@@ -40,7 +44,7 @@ class AtMarket < Interface
     else
       action = 'sell'
     end
-    count = @max ? 'max' : '1'
+    count = max? ? 'max' : '1'
     "  —  #{action} #{count}"
   end
 
@@ -98,7 +102,7 @@ class AtMarket < Interface
   end
 
   def buy good
-    result = MarketActions.buy good, town.market, @max
+    result = MarketActions.buy good, town.market, max?
     if result.success?
       @result = Gosu::Image.from_text("You have #{$adventurer.money} #{MONEY} left.", 30)
     else
@@ -109,7 +113,7 @@ class AtMarket < Interface
   end
 
   def sell good
-    result = MarketActions.sell good, town.market, @max
+    result = MarketActions.sell good, town.market, max?
     if result.success?
       @result = Gosu::Image.from_text("Sold! You have #{$adventurer.money} #{MONEY}.", 30)
     else
@@ -123,25 +127,5 @@ class AtMarket < Interface
     unset_button_down
     destroy
     InTown.new(town).create
-  end
-
-  def take_action
-    selected_action = @options.keys[@selected_option]
-    send selected_action
-  end
-
-  def setup_input_handling
-    set_button_down do |id|
-      case id
-      when Gosu::KB_LEFT, Gosu::KB_RIGHT
-        @max = !@max
-      when Gosu::KB_DOWN
-        @selected_option = (@selected_option + 1) % @options.length
-      when Gosu::KB_UP
-        @selected_option = (@selected_option - 1) % @options.length
-      when Gosu::KB_ENTER, Gosu::KB_RETURN
-        take_action
-      end
-    end
   end
 end

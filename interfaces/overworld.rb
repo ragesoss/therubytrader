@@ -38,6 +38,10 @@ class Overworld < Interface
     end
   end
 
+  def options
+    nearby_towns
+  end
+
   def far_towns
     @far_towns ||= towns.select do |town|
       Distance.between(town.location, @location.location) > max_travel
@@ -51,9 +55,6 @@ class Overworld < Interface
         TravelActions.set_off_to(town)
       end
     end
-  end
-
-  def update
   end
 
   ACTIVE_SIZE = 30
@@ -90,20 +91,5 @@ class Overworld < Interface
   def take_action
     selected_action = nearby_towns[@selected_option].key
     send selected_action
-  end
-
-  def setup_input_handling
-    set_button_down do |id|
-      case id
-      when Gosu::KB_DOWN
-        @selected_option = (@selected_option + 1) % nearby_towns.length
-      when Gosu::KB_UP
-        @selected_option = (@selected_option - 1) % nearby_towns.length
-      when Gosu::KB_S
-        pp $state
-      when Gosu::KB_ENTER, Gosu::KB_RETURN
-        take_action
-      end
-    end
   end
 end

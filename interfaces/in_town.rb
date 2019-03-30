@@ -89,22 +89,4 @@ class InTown < Interface
     destroy
     Overworld.new(town).create
   end
-
-  def take_action
-    selected_action = @options.keys[@selected_option]
-    send selected_action
-  end
-
-  def setup_input_handling
-    set_button_down do |id|
-      case id
-      when Gosu::KB_DOWN
-        @selected_option = (@selected_option + 1) % @options.length
-      when Gosu::KB_UP
-        @selected_option = (@selected_option - 1) % @options.length
-      when Gosu::KB_ENTER, Gosu::KB_RETURN
-        take_action
-      end
-    end
-  end
 end
