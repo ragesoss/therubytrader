@@ -2,6 +2,14 @@ require_relative '../quest'
 require_relative '../../interfaces/ascension'
 
 class Ascend < Quest
+  def show? interface
+    interface.class == InTown
+  end
+
+  def possible_actions
+    [:complete]
+  end
+
   def requirements_met?
     $adventurer.inventory.goods[:rubies] >= 100
   end

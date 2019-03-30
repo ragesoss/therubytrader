@@ -1,7 +1,8 @@
 class Inventory
-  attr_accessor :goods
+  attr_accessor :goods, :special_items
   def initialize
     @goods = Hash.new 0
+    @special_items = {}
   end
 
   def weight
@@ -10,11 +11,11 @@ class Inventory
     end
   end
 
-  def add(good, quantity)
+  def add good, quantity
     goods[good] += quantity
   end
 
-  def remove(good, quantity)
+  def remove good, quantity
     goods[good] -= quantity
   end
 end

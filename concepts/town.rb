@@ -10,6 +10,7 @@ class Town < Place
     @location = location || TownPlacer.new_location(required_biome: biome)
     @biome = TownPlacer.biome @location
     @color = TownPlacer.map_reader.color *@location
+    @quests = []
   end
 
   def description

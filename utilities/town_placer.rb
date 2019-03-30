@@ -1,5 +1,6 @@
 require_relative './map_reader.rb'
 require_relative '../concepts/quests/ascend'
+require_relative '../concepts/quests/bad_penny'
 require_relative '../concepts/biome'
 
 class TownPlacer
@@ -41,13 +42,19 @@ class TownPlacer
       $state[:towns][town_name.downcase.to_sym] = Town.new(town_name)
     end
 
-    add_ascension_quest
+    add_quests
   end
 
-  def self.add_ascension_quest
+  def self.add_quests
+    # Ascend
     ascension_town = TOWN_NAMES.sample
     $state[:towns][ascension_town.downcase.to_sym].quests = [Ascend.new(ascension_town.downcase.to_sym)]
+
+    # BadPenny
+    town = TOWN_NAMES.sample
+    $state[:towns][town.downcase.to_sym].quests = [BadPenny.new(town.downcase.to_sym)]
   end
+
 
   def self.map_reader
     @map_reader ||= MapReader.new 'media/overworld-base.png'

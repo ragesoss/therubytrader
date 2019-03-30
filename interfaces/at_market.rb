@@ -29,7 +29,7 @@ class AtMarket < Interface
       else
         text = "#{option[1]}#{transaction_count_label}"
       end
-      style = @selected_option == i ? { bold: true, width: 600 } : { width: 600 }
+      style = @selected_option == i ? { bold: true, width: 800 } : { width: 800 }
       Gosu::Image.from_text(text, 30, style).draw 50, 160 + 60*i, 0
     end
   end
@@ -58,12 +58,24 @@ class AtMarket < Interface
     leave_shop: "Leave"
   }
 
-  def shop
+  def shop result = nil
     @current_action = :menu
-    @result = nil
+    @result = result
     @prompt = nil
     @selected_option = 0
-    @options = SHOP_ACTIONS
+
+    @options = {}
+    town.quests.each do |quest|
+      next unless quest.show? self
+      quest.possible_actions.each do |action|
+        define_singleton_method(action) do
+          result = quest.send(action, self)
+          shop Gosu::Image.from_text(result.text, 30, width: 800)
+        end
+      end
+      @options = @options.merge(quest.options)
+    end
+    @options.merge! SHOP_ACTIONS
   end
 
   def buy_goods selected_option = 0

@@ -50,18 +50,18 @@ class InTown < Interface
     @result = result
     @prompt = Gosu::Image.from_text('What will you do?', 30)
     @selected_option = 0
-    @options = OVERVIEW_ACTIONS
-    @quests.each do |quest|
+    @options = {}
+    town.quests.each do |quest|
+      next unless quest.show? self
       @options = @options.merge(quest.options)
       quest.options.keys.each do |action|
         define_singleton_method(action) do
           result = quest.send(action, self)
-          @quests = town.quests
           set_overview Gosu::Image.from_text(result, 30)
         end
       end
     end
-
+    @options.merge! OVERVIEW_ACTIONS
   end
 
   def rest
