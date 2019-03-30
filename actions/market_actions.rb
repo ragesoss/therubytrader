@@ -10,7 +10,7 @@ class MarketActions < Action
     elsif $adventurer.encumbered?
       return failure("You're carrying too much already!")
     else
-      count = max ? max_buyable : 1
+      count = max ? max_buyable(good, market, price) : 1
       $adventurer.inventory.add good, count
       $adventurer.pay(price*count)
       market.remove good, count

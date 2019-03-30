@@ -22,9 +22,26 @@ class AtMarket < Interface
     @prompt&.draw 10, 90, 0
     @result&.draw 10, 700, 0
     @options.each.with_index do |option, i|
+      if @current_action == :menu
+        text = option[1]
+      elsif @options.count == i +1
+        text = option[1]
+      else
+        text = "#{option[1]}#{transaction_count_label}"
+      end
       style = @selected_option == i ? { bold: true, width: 600 } : { width: 600 }
-      Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 60*i, 0
+      Gosu::Image.from_text(text, 30, style).draw 50, 160 + 60*i, 0
     end
+  end
+
+  def transaction_count_label
+    if @current_action == :buying
+      action = 'buy'
+    else
+      action = 'sell'
+    end
+    count = @max ? 'max' : '1'
+    "  —  #{action} #{count}"
   end
 
   def update_greeting greeting = nil
@@ -42,6 +59,7 @@ class AtMarket < Interface
   }
 
   def shop
+    @current_action = :menu
     @result = nil
     @prompt = nil
     @selected_option = 0
@@ -49,12 +67,14 @@ class AtMarket < Interface
   end
 
   def buy_goods selected_option = 0
+    @current_action = :buying
     @prompt = Gosu::Image.from_text('What would you like to buy?', 30)
     @selected_option = selected_option
     @options = town.market.buy_options
   end
 
   def sell_goods selected_option = 0
+    @current_action = :selling
     @prompt = Gosu::Image.from_text('What would you like to sell?', 30)
     @selected_option = selected_option
     @options = town.market.sell_options
@@ -66,7 +86,7 @@ class AtMarket < Interface
   end
 
   def buy good
-    result = MarketActions.buy good, town.market
+    result = MarketActions.buy good, town.market, @max
     if result.success?
       @result = Gosu::Image.from_text("You have #{$adventurer.money} #{MONEY} left.", 30)
     else
@@ -77,7 +97,7 @@ class AtMarket < Interface
   end
 
   def sell good
-    result = MarketActions.sell good, town.market
+    result = MarketActions.sell good, town.market, @max
     if result.success?
       @result = Gosu::Image.from_text("Sold! You have #{$adventurer.money} #{MONEY}.", 30)
     else
