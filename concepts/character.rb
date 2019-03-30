@@ -37,6 +37,10 @@ class Character
     @money || 0
   end
 
+  def has? item
+    inventory.special_items[item]
+  end
+
   def loot
     contents = ["#{money} #{MONEY}"]
     return contents.first unless inventory

@@ -14,6 +14,7 @@ class MarketActions < Action
       $adventurer.inventory.add good, count
       $adventurer.pay(price*count)
       market.remove good, count
+      $adventurer.get_paid(1) if $adventurer.has? :bad_penny
       return success
     end
   end
