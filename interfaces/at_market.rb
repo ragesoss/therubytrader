@@ -20,10 +20,8 @@ class AtMarket < Interface
   end
 
   def draw
+    super
     @background.draw 800, 100, 0
-    @greeting&.draw 10, 10, 0
-    @description.draw 10, 50, 0
-    @prompt&.draw 10, 90, 0
     @result&.draw 10, 700, 0
     @options.each.with_index do |option, i|
       if @current_action == :menu

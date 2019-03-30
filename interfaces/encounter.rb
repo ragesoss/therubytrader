@@ -27,11 +27,11 @@ class Encounter < Interface
 
   def update_status
     if $adventurer.dead?
-      @status = Gosu::Image.from_text("You have have died!", 30)
+      @prompt = Gosu::Image.from_text("You have have died!", 30)
     elsif @enemy.alive?
-      @status = Gosu::Image.from_text("You have #{$adventurer.life} life. The enemy has #{@enemy.life} life.", 30)
+      @prompt = Gosu::Image.from_text("You have #{$adventurer.life} life. The enemy has #{@enemy.life} life.", 30)
     else
-      @status = Gosu::Image.from_text("You have #{$adventurer.life} life, and the enemy is dead.", 30)
+      @prompt = Gosu::Image.from_text("You have #{$adventurer.life} life, and the enemy is dead.", 30)
     end
   end
 
@@ -51,8 +51,7 @@ class Encounter < Interface
   end
 
   def draw
-    @description.draw 10, 50, 0
-    @status.draw 10, 100, 0
+    super
     @enemy.image&.draw 800, 100, 0
     @result&.draw 10, 640, 0
     @options.each.with_index do |option, i|

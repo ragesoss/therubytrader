@@ -7,6 +7,12 @@ class Interface
   def update
   end
 
+  def draw
+    @greeting&.draw 10, 10, 0
+    @description&.draw 10, 50, 0
+    @prompt&.draw 10, 90, 0
+  end
+
   def create
     $window.add_element self
   end

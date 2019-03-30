@@ -21,10 +21,8 @@ class InTown < Interface
   end
 
   def draw
+    super
     @background.draw 800, 100, 0
-    @greeting&.draw 10, 10, 0
-    @description.draw 10, 50, 0
-    @prompt.draw 10, 90, 0
     @result&.draw 10, 640, 0
     @options.each.with_index do |option, i|
       style = @selected_option == i ? { bold: true, width: 600 } : { width: 600 }
