@@ -33,6 +33,10 @@ class EncounterActions < Action
     end
   end
 
+  def self.gain_experience enemy
+    $adventurer.experience[enemy.symbol] += 1
+  end
+
   class FightRound
     def initialize enemy
       @enemy = enemy

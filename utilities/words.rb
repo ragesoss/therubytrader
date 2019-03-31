@@ -8,4 +8,13 @@ class Words
   def self.classname symbol
     symbol.to_s.split('_').map { |word| word.capitalize }.join
   end
+
+  def self.symbol klass
+    klass.to_s
+      .gsub(/::/, '/')
+      .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+      .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+      .tr("-", "_")
+      .downcase
+  end
 end

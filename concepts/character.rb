@@ -5,6 +5,10 @@ class Character
   attr_accessor :name, :life, :money, :inventory
   attr_accessor *SKILLS
 
+  def symbol
+    Words.symbol self.class
+  end
+
   def change_skill skill, amount = 1
     send("#{skill}=", send(skill) + amount)
   end

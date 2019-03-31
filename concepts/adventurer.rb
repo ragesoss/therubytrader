@@ -2,12 +2,14 @@ require_relative './inventory'
 require_relative './character'
 
 class Adventurer < Character
+  attr_accessor :experience
   def initialize name
     @name = name
     @max_life = 20
     @life = 20
     @money = 100
     @inventory = Inventory.new
+    @experience = Hash.new(0)
 
     SKILLS.each do |skill|
       send("#{skill}=", 1)

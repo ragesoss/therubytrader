@@ -77,6 +77,7 @@ class Encounter < Interface
 
   def set_victory
     EncounterActions.loot_body @enemy
+    EncounterActions.gain_experience @enemy
     @status = Gosu::Image.from_text("You defeated #{@enemy.specific_name}! Your foe had #{@enemy.loot}.", 30)
     @options = {
       continue_on: "Continue the journey to #{destination.name}."
