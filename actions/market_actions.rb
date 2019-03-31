@@ -22,7 +22,7 @@ class MarketActions < Action
   def self.max_buyable good, market, price
     affordable = $adventurer.money / price
     available = market.quantity good
-    carryable = $adventurer.carrying_capacity / market.weight(good)
+    carryable = $adventurer.carrying_capacity / [market.weight(good), 0.001].max
     [affordable, available, carryable].min
   end
 
