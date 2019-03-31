@@ -49,7 +49,7 @@ class Overworld < Interface
   end
 
   def set_actions
-   nearby_towns.each do |town|
+    nearby_towns.each do |town|
       define_singleton_method(town.key) do
         destroy
         TravelActions.set_off_to(town)

@@ -54,10 +54,7 @@ class Encounter < Interface
     super
     @enemy.image&.draw 800, 100, 0
     @result&.draw 10, 640, 0
-    @options.each.with_index do |option, i|
-      style = @selected_option == i ? { bold: true } : {}
-      Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 50*i, 0
-    end
+    render_options_hash
   end
 
   def continue_on

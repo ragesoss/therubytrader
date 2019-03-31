@@ -24,10 +24,7 @@ class InTown < Interface
     super
     @background.draw 800, 100, 0
     @result&.draw 10, 640, 0
-    @options.each.with_index do |option, i|
-      style = @selected_option == i ? { bold: true, width: 600 } : { width: 600 }
-      Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 60*i, 0
-    end
+    render_options_hash
   end
 
   def update_greeting greeting = nil

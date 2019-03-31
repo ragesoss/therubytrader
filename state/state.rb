@@ -1,4 +1,4 @@
-require_relative '../interfaces/what_is_your_name'
+require_relative '../interfaces/start'
 require_relative '../utilities/town_placer'
 
 class State
@@ -9,7 +9,7 @@ class State
     else
       $state = {}
       TownPlacer.generate_towns
-      WhatIsYourName.new.create
+      Start.new.create
     end
   end
 

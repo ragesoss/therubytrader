@@ -13,6 +13,13 @@ class Interface
     @prompt&.draw 10, 90, 0
   end
 
+  def render_options_hash
+    @options.each.with_index do |option, i|
+      style = @selected_option == i ? { bold: true, width: 600 } : { width: 600 }
+      Gosu::Image.from_text(option[1], 30, style).draw 50, 160 + 60*i, 0
+    end
+  end
+
   def create
     $window.add_element self
   end
