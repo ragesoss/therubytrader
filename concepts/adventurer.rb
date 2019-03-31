@@ -38,7 +38,7 @@ class Adventurer < Character
     0..3
   end
 
-  MAX_WEIGHT = 100
+  MAX_WEIGHT = 300
   def encumbered?
     inventory.weight > MAX_WEIGHT
   end
