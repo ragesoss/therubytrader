@@ -31,4 +31,8 @@ class State
   def self.save
     File.write 'save_file', Marshal.dump($state)
   end
+
+  def self.hardcore?
+    $state[:difficulty] == :hardcore
+  end
 end
