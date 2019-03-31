@@ -22,6 +22,21 @@ class TownPlacer
     tropical_rain_forest: 1
   }
 
+  def self.pick_town_size
+    case rand 100
+    when 0..500 # village
+      rand 1..500
+    when 41..80 # town
+      rand 501..3000
+    when 81..90 # city
+      rand 3001..20000
+    when 91..98 # large city
+      rand 20001..80000
+    when 99 # mega city
+      rand 80001..500000
+    end
+  end
+
   def self.unplaced_towns
     TOWN_NAMES - $state[:towns].values.collect(&:name)
   end
@@ -32,14 +47,12 @@ class TownPlacer
     MIN_BIOME_COUNTS.each do |biome, count|
       count.times do
         town_name = unplaced_towns.sample
-        pp biome
-        pp town_name
-        $state[:towns][town_name.downcase.to_sym] = Town.new(town_name, biome: biome)
+        $state[:towns][town_name.downcase.to_sym] = Town.new(town_name, biome: biome, population: pick_town_size)
       end
     end
 
     unplaced_towns.each do |town_name|
-      $state[:towns][town_name.downcase.to_sym] = Town.new(town_name)
+      $state[:towns][town_name.downcase.to_sym] = Town.new(town_name, population: pick_town_size)
     end
 
     add_quests
