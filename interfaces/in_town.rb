@@ -9,7 +9,7 @@ class InTown < Interface
     $state[:location] = town.key
     @town = town
     @quests = town.quests || []
-    @background = Gosu::Image.new('media/town-small.png')
+    @background = Gosu::Image.new(town.image)
     update_greeting options[:greeting]
     @description = Gosu::Image.from_text(description, 30)
     set_overview

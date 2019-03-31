@@ -24,9 +24,9 @@ class TownPlacer
 
   def self.pick_town_size
     case rand 100
-    when 0..500 # village
+    when 0..45 # village
       rand 1..500
-    when 41..80 # town
+    when 46..80 # town
       rand 501..3000
     when 81..90 # city
       rand 3001..20000
