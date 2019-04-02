@@ -8,7 +8,7 @@ class Goblin < Character
     @inventory.add(:food, rand(3)) if rand > 0.6
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 2)
     end
   end
 

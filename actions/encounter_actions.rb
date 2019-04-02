@@ -17,8 +17,12 @@ class EncounterActions < Action
     end
   end
 
-  def self.hit? character
-    rand > character.evasion_chance
+  def self.hit? character, advantage: 0, disadvantage: 0
+    hit = rand > character.evasion_chance
+    advantage.times { hit ||= rand > character.evasion_chance }
+    miss = false
+    disadvantage.times { miss ||= rand < character.evasion_chance }
+    hit && !miss
   end
 
   def self.pick_monster destination
@@ -40,16 +44,18 @@ class EncounterActions < Action
   class FightRound
     def initialize enemy
       @enemy = enemy
+      @advantage = $adventurer.advantage_versus enemy.class
+      @disadvantage = @advantage / 3
     end
 
     def call
-      @hit_enemy = EncounterActions.hit? @enemy
+      @hit_enemy = EncounterActions.hit? @enemy, advantage: @advantage
       if @hit_enemy
         @damage_dealt = $adventurer.damage
         @enemy.take_damage @damage_dealt
       end
       return EncounterActions.success(result) unless @enemy.alive?
-      @hit_adventurer = EncounterActions.hit? $adventurer
+      @hit_adventurer = EncounterActions.hit? $adventurer, disadvantage: @advantage
       if @hit_adventurer
         @damage_taken = @enemy.damage
         $adventurer.take_damage @damage_taken

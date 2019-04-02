@@ -8,7 +8,7 @@ class SeaSerpent < Character
     @inventory.add(:hide, rand(4))
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 3)
     end
   end
 

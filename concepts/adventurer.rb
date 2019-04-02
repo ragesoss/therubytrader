@@ -36,6 +36,12 @@ class Adventurer < Character
     @money += amount
   end
 
+  def advantage_versus enemy_class
+    xp = experience[Words.symbol enemy_class]
+    return 0 if xp.zero?
+    Math.log10(xp).to_i + 1
+  end
+
   def damage_range
     0..3
   end

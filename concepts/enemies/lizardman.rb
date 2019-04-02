@@ -10,7 +10,7 @@ class Lizardman < Character
     @inventory.add(:hide, 1) if rand > 0.9
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 3)
     end
   end
 

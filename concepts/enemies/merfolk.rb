@@ -8,7 +8,7 @@ class Merfolk < Character
     @inventory.add(:silver, rand(3)) if rand > 0.8
 
     SKILLS.each do |skill|
-      send("#{skill}=", 2)
+      send("#{skill}=", 3)
     end
   end
 

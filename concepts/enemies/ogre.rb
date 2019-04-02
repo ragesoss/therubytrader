@@ -7,7 +7,7 @@ class Ogre < Character
     @inventory.add(:silver, rand(3)) if rand > 0.85
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 2)
     end
   end
 

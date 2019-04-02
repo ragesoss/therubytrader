@@ -12,7 +12,7 @@ class Troll < Character
     @inventory.add(:silver, rand(4)) if rand > 0.6
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 4)
     end
   end
 

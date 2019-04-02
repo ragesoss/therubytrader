@@ -10,7 +10,7 @@ class GoblinWolfrider < Character
     @inventory.add(:silver, 1) if rand > 0.93
 
     SKILLS.each do |skill|
-      send("#{skill}=", 2)
+      send("#{skill}=", 3)
     end
   end
 

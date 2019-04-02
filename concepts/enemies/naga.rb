@@ -8,7 +8,7 @@ class Naga < Character
     @inventory.add(:silver, 1) if rand > 0.9
 
     SKILLS.each do |skill|
-      send("#{skill}=", 2)
+      send("#{skill}=", 3)
     end
   end
 

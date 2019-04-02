@@ -2,10 +2,10 @@ require_relative '../character'
 
 class Zombie < Character
   def initialize
-    @life = rand(2..4)
+    @life = rand(2..8)
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 2)
     end
   end
 

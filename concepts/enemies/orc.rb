@@ -9,7 +9,7 @@ class Orc < Character
     @inventory.add(:tools, rand(2)) if rand > 0.6
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 3)
     end
   end
 

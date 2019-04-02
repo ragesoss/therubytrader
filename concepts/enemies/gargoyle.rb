@@ -8,7 +8,7 @@ class Gargoyle < Character
     @inventory.add(:relics, 1) if rand > 0.95
 
     SKILLS.each do |skill|
-      send("#{skill}=", 1)
+      send("#{skill}=", 2)
     end
   end
 
