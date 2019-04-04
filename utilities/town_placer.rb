@@ -4,7 +4,7 @@ require_relative '../concepts/quests/bad_penny'
 require_relative '../concepts/biome'
 
 class TownPlacer
-  MAP_RANGE = 1..2000
+  MAP_RANGE = 1..4050
   TOWN_NAMES = %w[Abelmoschus Anthemis Apium Artemisia Brassica Carpinus Erycina Flossvale
                   Govenia Garaya Holopogon Isotria Lanium Larix Macodes Malus Mixis
                   Mume Olea Ophiopogon Ophrys Orchedo Palmatum Panisea Passiflora Pimpinella Podangis
@@ -68,14 +68,13 @@ class TownPlacer
     $state[:towns][town.downcase.to_sym].quests = [BadPenny.new(town.downcase.to_sym)]
   end
 
-
   def self.map_reader
-    @map_reader ||= MapReader.new 'media/overworld-base.png'
+    @map_reader ||= MapReader.new 'media/overworld-base-large.png'
   end
 
   def self.new_location required_biome: nil
     location = random_location
-  
+
     color = map_reader.color *location
     if required_biome && biome(location) != required_biome
       return new_location required_biome: required_biome

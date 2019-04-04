@@ -90,11 +90,11 @@ class Town < Place
   BULLET_OFFSET_X = -2
   BULLET_OFFSET_Y = -12
   def lat
-    @lat ||= (BULLET_OFFSET_X + true_lat * MAP_RATIO).to_i
+    @lat ||= (BULLET_OFFSET_X + true_lat).to_i
   end
 
   def long
-    @long ||= (BULLET_OFFSET_Y + true_long * MAP_RATIO).to_i
+    @long ||= (BULLET_OFFSET_Y + true_long).to_i
   end
 
   private

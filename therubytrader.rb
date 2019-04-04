@@ -2,7 +2,8 @@ require 'gosu'
 require_relative 'state/state'
 
 WINDOW_SIZE = 1440
-MAP_RATIO = WINDOW_SIZE / 2048.to_f
+MAP_SIZE = 4096
+MAP_RATIO = WINDOW_SIZE / MAP_SIZE.to_f
 
 class MainScreen < Gosu::Window
   attr_accessor :on_button_down
