@@ -6,13 +6,15 @@ GRAY = Gosu::Color.argb(0xff_808080)
 LIGHT_GRAY = Gosu::Color.argb(0xff_cccccc)
 BLACK = Gosu::Color.argb(0xff_000000)
 
+TOP_MARGIN = 120
+BOTTOM_MARGIN = 80
 class Overworld < Interface
   def initialize location
     $state[:location] = location.key
     @location = location
     @map_offset_x = map_offset(location.location[0])
     @map_offset_y = map_offset(location.location[1])
-    @background = Gosu::Image.new('media/overworld-large.png').subimage(@map_offset_x, @map_offset_y, WINDOW_SIZE, WINDOW_SIZE)
+    @background = Gosu::Image.new('media/overworld-large.png').subimage(@map_offset_x, @map_offset_y, WINDOW_SIZE, WINDOW_SIZE - TOP_MARGIN - BOTTOM_MARGIN)
     @greeting = Gosu::Image.from_text($adventurer.status, 30)
     @prompt = Gosu::Image.from_text('Where do you want to travel?', 30)
     @far_towns_draw ||= far_towns.map do |town|
@@ -72,13 +74,15 @@ class Overworld < Interface
   ACTIVE_SIZE = 30
   INACTIVE_SIZE = 20
   def draw
-    @background.draw 0, 0, 0
-    super
+    @background.draw 0, TOP_MARGIN, 0
     selected_town = nearby_towns[@selected_option]
-    Gosu::Image.from_text(selected_town.description, 40).draw 10, 1350, 0
+    Gosu::Image.from_text(selected_town.description, 40).draw 10, 1380, 0
     @far_towns_draw.each do |town, label|
-      label.draw town.lat - @map_offset_x, town.long - @map_offset_y, 2, 1, 1, LIGHT_GRAY
-      label.draw town.lat - @map_offset_x + 1, town.long - @map_offset_y + 1, 1, 1, 1, BLACK
+      town_y = town.long - @map_offset_y + TOP_MARGIN
+      next if town_y < TOP_MARGIN
+      next if town_y > (WINDOW_SIZE - BOTTOM_MARGIN)
+      label.draw town.lat - @map_offset_x, town_y, 2, 1, 1, LIGHT_GRAY
+      label.draw town.lat - @map_offset_x + 1, town_y + 1, 1, 1, 1, BLACK
     end
 
     nearby_towns.each.with_index do |town, i|
@@ -93,11 +97,14 @@ class Overworld < Interface
               else
                 GRAY
               end
+      town_y = town.long - @map_offset_y + TOP_MARGIN
       # label
-      Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat - @map_offset_x, town.long - @map_offset_y, z_index + 1, 1, 1, color
+      Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat - @map_offset_x, town_y, z_index + 1, 1, 1, color
       # shadow
-      Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat - @map_offset_x + 2, town.long - @map_offset_y + 2, z_index, 1, 1, BLACK
+      Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat - @map_offset_x + 2, town_y + 2, z_index, 1, 1, BLACK
     end
+
+    super
   end
 
   def take_action
