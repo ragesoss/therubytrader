@@ -43,7 +43,7 @@ class Overworld < Interface
   end
 
   def max_travel
-    @max_travel ||= 250 + 100 * $adventurer.survival
+    @max_travel ||= 350 + 200 * $adventurer.survival
   end
 
   def nearby_towns

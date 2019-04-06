@@ -5,11 +5,14 @@ require_relative '../concepts/biome'
 
 class TownPlacer
   MAP_RANGE = 1..4050
-  TOWN_NAMES = %w[Abelmoschus Anthemis Apium Aronia Artemisia Brassica Carpinus Curcuma Cymbopogon Diospyros Erycina Euonymus Flossvale
-                  Govenia Garaya Hamelia Hevea Holopogon Isotria Lanium Larix Macodes Malus Mixis
-                  Mume Olea Ophiopogon Ophrys Orchedo Palmatum Panisea Passiflora Persea Pimpinella Pisum Podangis
-                  Pyracantha Pyrus Quercus Rana Risleya Rubus Salix Solanum Stenia Syzygium Thuja Tradescantia Trias Vanda
-                  Yoania]
+  TOWN_NAMES = %w[Abelmoschus Abies Amanita Ananas Anthemis Apium Aquilegia Aronia Artemisia Artocarpus Betula
+                  Brassica Carpinus Cedrus Cocos Cucurbita Curcuma Cymbopogon Dioscorea Diospyros
+                  Erycina Euonymus Flossvale Govenia Garaya Grifola Hamelia Hevea
+                  Holopogon Isotria Lanium Larix Macodes Malus Mentha Mixis Morchella
+                  Mume Ocimum Olea Ophiopogon Ophrys Orchedo Palmatum Panisea
+                  Passiflora Persea Picea Pimpinella Pisum Podangis Populus Pyracantha
+                  Pyrus Quercus Rana Risleya Rubus Saccharum Salix Sesamu Solanum Stenia Syzygium Thuja
+                  Tradescantia Trias Vaccinium Vanda Yoania]
 
   MIN_BIOME_COUNTS = {
     mountain: 1,
