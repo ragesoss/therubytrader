@@ -3,17 +3,17 @@ require_relative '../concepts/enemies/ogre'
 require_relative '../concepts/enemies/gargoyle'
 
 class EncounterActions < Action
-  def self.fight enemy
-    FightRound.new(enemy).call
+  def self.fight enemy, round
+    FightRound.new(enemy, round).call
   end
 
-  def self.run_from enemy
+  def self.run_from enemy, round
     if hit? $adventurer
       damage = enemy.damage
       $adventurer.take_damage damage
-      return failure("You can't get away! You were hit, and you lost #{damage} life.")
+      return failure("Round #{round}: You can't get away! You were hit, and you lost #{damage} life.")
     else
-      return success("You got away!")
+      return success("Round #{round}: You got away!")
     end
   end
 
@@ -42,8 +42,9 @@ class EncounterActions < Action
   end
 
   class FightRound
-    def initialize enemy
+    def initialize enemy, round
       @enemy = enemy
+      @round = round
       @advantage = $adventurer.advantage_versus enemy.class
       @disadvantage = @advantage / 3
     end
@@ -64,7 +65,7 @@ class EncounterActions < Action
     end
 
     def result
-      @result = String.new
+      @result = String.new("Round #{@round}:")
       if @hit_enemy
         @result += "You hit for #{@damage_dealt}. "
       else

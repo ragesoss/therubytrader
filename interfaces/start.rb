@@ -5,7 +5,7 @@ class Start < Interface
   def initialize
     setup_input_handling
     @selected_option = 0
-    @description = Gosu::Image.from_text('Choose a difficulty setting:', 30)
+    @info_one = Gosu::Image.from_text('Choose a difficulty setting:', 30)
     @options = {
       normal: "Normal",
       hardcore: "Hardcore"

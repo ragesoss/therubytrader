@@ -11,7 +11,7 @@ class InTown < Interface
     @quests = town.quests || []
     @background = Gosu::Image.new(town.image)
     update_greeting options[:greeting]
-    @description = Gosu::Image.from_text(description, 30)
+    @info_one = Gosu::Image.from_text(description, 30)
     set_overview
     setup_input_handling
   end
@@ -29,9 +29,9 @@ class InTown < Interface
 
   def update_greeting greeting = nil
     if greeting
-      @greeting = Gosu::Image.from_text(greeting, 30)
+      @info_two = Gosu::Image.from_text(greeting, 30)
     else
-      @greeting = Gosu::Image.from_text($adventurer.status, 30)
+      @info_two = Gosu::Image.from_text($adventurer.status, 30)
     end
   end
 
@@ -43,7 +43,7 @@ class InTown < Interface
   }
   def set_overview result = nil
     @result = result
-    @prompt = Gosu::Image.from_text('What will you do?', 30)
+    @info_three = Gosu::Image.from_text('What will you do?', 30)
     @selected_option = 0
     @options = {}
     town.quests.each do |quest|

@@ -6,7 +6,7 @@ class AtMarket < Interface
     @town = town
     @background = Gosu::Image.new('media/merchant.png')
     update_greeting
-    @description = Gosu::Image.from_text(description, 30)
+    @info_one = Gosu::Image.from_text(description, 30)
     shop
     setup_input_handling
   end
@@ -63,7 +63,7 @@ class AtMarket < Interface
   def shop result = nil
     @current_action = :menu
     @result = result
-    @prompt = nil
+    @info_two = nil
     @selected_option = 0
 
     @options = {}
@@ -82,14 +82,14 @@ class AtMarket < Interface
 
   def buy_goods selected_option = 0
     @current_action = :buying
-    @prompt = Gosu::Image.from_text('What would you like to buy?', 30)
+    @info_two = Gosu::Image.from_text('What would you like to buy?', 30)
     @selected_option = selected_option
     @options = town.market.buy_options
   end
 
   def sell_goods selected_option = 0
     @current_action = :selling
-    @prompt = Gosu::Image.from_text('What would you like to sell?', 30)
+    @info_two = Gosu::Image.from_text('What would you like to sell?', 30)
     @selected_option = selected_option
     @options = town.market.sell_options
   end

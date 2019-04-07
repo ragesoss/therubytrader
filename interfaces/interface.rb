@@ -8,9 +8,9 @@ class Interface
   end
 
   def draw
-    @greeting&.draw 10, 10, 0
-    @description&.draw 10, 50, 0
-    @prompt&.draw 10, 90, 0
+    @info_one&.draw 10, 10, 0
+    @info_two&.draw 10, 50, 0
+    @info_three&.draw 10, 90, 0
   end
 
   def render_options_hash

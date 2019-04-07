@@ -15,8 +15,8 @@ class Overworld < Interface
     @map_offset_x = map_offset(location.location[0])
     @map_offset_y = map_offset(location.location[1])
     @background = Gosu::Image.new('media/overworld-large.png').subimage(@map_offset_x, @map_offset_y, WINDOW_SIZE, WINDOW_SIZE - TOP_MARGIN - BOTTOM_MARGIN)
-    @greeting = Gosu::Image.from_text($adventurer.status, 30)
-    @prompt = Gosu::Image.from_text('Where do you want to travel?', 30)
+    @info_one = Gosu::Image.from_text($adventurer.status, 30)
+    @info_two = Gosu::Image.from_text('Where do you want to travel?', 30)
     @far_towns_draw ||= far_towns.map do |town|
       pin = "• #{town.name}"
       image = Gosu::Image.from_text(pin, INACTIVE_SIZE)

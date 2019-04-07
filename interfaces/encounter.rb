@@ -8,7 +8,8 @@ class Encounter < Interface
     @distance_remaining = distance_remaining
 
     @enemy = EncounterActions.pick_monster(@destination)
-    @description = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, you encounter #{@enemy.name}!", 30)
+    @round = 1
+    @info_one = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, you encounter #{@enemy.name}!", 30)
     set_fight_options
     update_status
     @selected_option = 0
@@ -27,33 +28,36 @@ class Encounter < Interface
 
   def update_status
     if $adventurer.dead?
-      @prompt = Gosu::Image.from_text("You have have died!", 30)
+      @info_two = Gosu::Image.from_text("You have have died!", 30)
     elsif @enemy.alive?
-      @prompt = Gosu::Image.from_text("You have #{$adventurer.life} life. The enemy has #{@enemy.life} life.", 30)
+      @info_two = Gosu::Image.from_text("You have #{$adventurer.life} life. The enemy has #{@enemy.life} life.", 30)
     else
-      @prompt = Gosu::Image.from_text("You have #{$adventurer.life} life, and the enemy is dead.", 30)
+      @info_two = Gosu::Image.from_text("You have #{$adventurer.life} life, and the enemy is dead.", 30)
     end
   end
 
   def fight
-    result = EncounterActions.fight @enemy
+    result = EncounterActions.fight @enemy, @round
     @result = Gosu::Image.from_text(result.text, 30)
     return set_victory if result.success?
     set_defeat if $adventurer.dead?
     update_status
+    @round += 1
   end
 
   def run
-    result = EncounterActions.run_from @enemy
+    result = EncounterActions.run_from @enemy, @round
     set_escape if result.success?
     set_defeat if $adventurer.dead?
     update_status
+    @round += 1
   end
 
   def draw
     super
     @enemy.image&.draw 800, 100, 0
     @result&.draw 10, 640, 0
+    @end_result&.draw 10, 690, 00
     render_options_hash
   end
 
@@ -78,7 +82,7 @@ class Encounter < Interface
   def set_victory
     EncounterActions.loot_body @enemy
     EncounterActions.gain_experience @enemy
-    @status = Gosu::Image.from_text("You defeated #{@enemy.specific_name}! Your foe had #{@enemy.loot}.", 30)
+    @end_result = Gosu::Image.from_text("You defeated #{@enemy.specific_name}! Your foe had #{@enemy.loot}.", 30)
     @options = {
       continue_on: "Continue the journey to #{destination.name}."
     }
