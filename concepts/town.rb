@@ -97,6 +97,15 @@ class Town < Place
     @long ||= (BULLET_OFFSET_Y + true_long).to_i
   end
 
+  def set_background
+    map_offset_x = Map.offset(location[0])
+    map_offset_y = Map.offset(location[1])
+    $backgrounds[key] ||= Gosu::Image.new('media/overworld-large.png')
+                                     .subimage(map_offset_x, map_offset_y,
+                                               WINDOW_SIZE, # width
+                                               WINDOW_SIZE - Overworld::TOP_MARGIN - Overworld::BOTTOM_MARGIN) #height
+  end
+
   private
 
   def biome_prefix

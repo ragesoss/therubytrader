@@ -1,14 +1,16 @@
 require_relative '../interfaces/start'
 require_relative '../utilities/town_placer'
+require_relative './background'
 
 class State
   def self.start
+    $backgrounds = {}
     if File.exist? 'save_file'
       load_save
       InTown.new(location).create
     else
       $state = {}
-      TownPlacer.generate_towns
+      Background.threads << Thread.new { TownPlacer.generate_towns }
       Start.new.create
     end
   end
@@ -34,5 +36,9 @@ class State
 
   def self.hardcore?
     $state[:difficulty] == :hardcore
+  end
+
+  def self.join_background
+    Background.join
   end
 end

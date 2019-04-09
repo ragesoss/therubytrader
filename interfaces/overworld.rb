@@ -1,4 +1,5 @@
 require_relative '../actions/travel_actions'
+require_relative '../utilities/map'
 
 YELLOW = Gosu::Color.argb(0xff_ffd972)
 WHITE = Gosu::Color.argb(0xff_ffffff)
@@ -6,15 +7,17 @@ GRAY = Gosu::Color.argb(0xff_808080)
 LIGHT_GRAY = Gosu::Color.argb(0xff_cccccc)
 BLACK = Gosu::Color.argb(0xff_000000)
 
-TOP_MARGIN = 120
-BOTTOM_MARGIN = 80
 class Overworld < Interface
+  TOP_MARGIN = 120
+  BOTTOM_MARGIN = 80
+
   def initialize location
     $state[:location] = location.key
     @location = location
-    @map_offset_x = map_offset(location.location[0])
-    @map_offset_y = map_offset(location.location[1])
-    @background = Gosu::Image.new('media/overworld-large.png').subimage(@map_offset_x, @map_offset_y, WINDOW_SIZE, WINDOW_SIZE - TOP_MARGIN - BOTTOM_MARGIN)
+    @map_offset_x = Map.offset(location.location[0])
+    @map_offset_y = Map.offset(location.location[1])
+    location.set_background
+    @background = $backgrounds[location.key]
     @info_one = Gosu::Image.from_text($adventurer.status, 30)
     @info_two = Gosu::Image.from_text('Where do you want to travel?', 30)
     @far_towns_draw ||= far_towns.map do |town|
@@ -26,16 +29,6 @@ class Overworld < Interface
     @selected_option = nearby_towns.index location
     setup_input_handling
     set_actions
-  end
-
-  def map_offset coordinate
-    if coordinate < (WINDOW_SIZE / 2)
-      0
-    elsif coordinate > (MAP_SIZE - (WINDOW_SIZE / 2))
-      (MAP_SIZE - WINDOW_SIZE)
-    else
-      coordinate - (WINDOW_SIZE / 2)
-    end
   end
 
   def towns

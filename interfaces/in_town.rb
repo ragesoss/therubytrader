@@ -14,6 +14,7 @@ class InTown < Interface
     @info_one = Gosu::Image.from_text(description, 30)
     set_overview
     setup_input_handling
+    Background.threads << Thread.new { town.set_background }
   end
 
   def description
@@ -81,6 +82,7 @@ class InTown < Interface
 
   def leave
     unset_button_down
+    Background.join
     destroy
     Overworld.new(town).create
   end
