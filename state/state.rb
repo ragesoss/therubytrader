@@ -11,6 +11,7 @@ class State
     else
       $state = {}
       Background.threads << Thread.new { TownPlacer.generate_towns }
+      Background.threads << Thread.new { TownPlacer.generate_dungeons }
       Start.new.create
     end
   end

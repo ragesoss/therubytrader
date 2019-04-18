@@ -65,36 +65,12 @@ class Town < Place
     "#{name}, #{size_adjective} #{biome.adjective} #{main_descriptor} of #{population}"
   end
 
-  def key
-    name.downcase.to_sym
-  end
-
   def market
     @market ||= Market.new(self)
   end
 
   def inn_cost
     @inn_cost ||= rand(5..15)
-  end
-
-  def true_lat
-    location[0]
-  end
-
-  def true_long
-    location[1]
-  end
-
-  # account for the offset of the text bullet vs the location,
-  # as well as the ratio between the window and the map image
-  BULLET_OFFSET_X = -2
-  BULLET_OFFSET_Y = -12
-  def lat
-    @lat ||= (BULLET_OFFSET_X + true_lat).to_i
-  end
-
-  def long
-    @long ||= (BULLET_OFFSET_Y + true_long).to_i
   end
 
   def set_background

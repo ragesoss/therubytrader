@@ -2,6 +2,7 @@ require_relative './map_reader.rb'
 require_relative '../concepts/quests/ascend'
 require_relative '../concepts/quests/bad_penny'
 require_relative '../concepts/biome'
+require_relative '../concepts/dungeon'
 
 class TownPlacer
   MAP_RANGE = 1..4050
@@ -59,6 +60,14 @@ class TownPlacer
     end
 
     add_quests
+  end
+
+  DUNGEON_NAMES = %w[Desmodus]
+  def self.generate_dungeons
+    $state[:dungeons] = {}
+    DUNGEON_NAMES.each do |dungeon_name|
+      $state[:dungeons][dungeon_name.downcase.to_sym] = Dungeon.new(dungeon_name, biome: :marsh)
+    end
   end
 
   def self.add_quests
