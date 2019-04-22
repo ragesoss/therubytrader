@@ -40,7 +40,11 @@ class Overworld < Interface
   end
 
   def nearby_towns
-    @nearby_towns ||= towns.select do |town|
+    @nearby_towns ||= towns_and_dungeons
+  end
+
+  def towns_and_dungeons
+    (towns + $state[:dungeons].values).select do |town|
       Distance.between(town.location, @location.location) <= max_travel
     end
   end
@@ -95,13 +99,6 @@ class Overworld < Interface
       Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat - @map_offset_x, town_y, z_index + 1, 1, 1, color
       # shadow
       Gosu::Image.from_text(pin, ACTIVE_SIZE, style).draw town.lat - @map_offset_x + 2, town_y + 2, z_index, 1, 1, BLACK
-    end
-
-    $state[:dungeons].values.each do |dungeon|
-      town_y = dungeon.long - @map_offset_y + TOP_MARGIN
-      next if town_y < TOP_MARGIN
-      next if town_y > (WINDOW_SIZE - BOTTOM_MARGIN)
-      Gosu::Image.from_text("• #{dungeon.name}", 50).draw dungeon.lat - @map_offset_x, town_y, 1, 1, 1, BLACK
     end
 
     super

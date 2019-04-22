@@ -10,7 +10,7 @@ class TravelActions < Action
 
   def self.continue_on_to destination, remaining_distance
     if remaining_distance == 0
-      InTown.new(destination).create
+      destination.enter
     else
       move_closer(destination, remaining_distance){ return }
       continue_on_to destination, remaining_distance - 1

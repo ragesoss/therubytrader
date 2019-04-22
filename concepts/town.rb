@@ -13,6 +13,10 @@ class Town < Place
     @quests = []
   end
 
+  def enter
+    InTown.new(self).create
+  end
+
   # [adjective, noun, image_filename]
   def population_attributes
     case population
