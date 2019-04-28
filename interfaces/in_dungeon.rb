@@ -15,11 +15,13 @@ class InDungeon < Interface
     @level = level
     @info_one = Gosu::Image.from_text("You've made your way to level #{level} of #{@dungeon.name}, which still has #{monsters_list}.", 30, { width: 1000 })
     create
+    setup_input_handling
   end
 
   def fight
     destroy
-    enter_level(@level + 1)
+    callback = Proc.new { enter_level(@level + 1) }
+    Encounter.new(destination: @dungeon, callback: callback, enemy: monsters.first).create
   end
 
   def flee
@@ -27,11 +29,15 @@ class InDungeon < Interface
     TravelActions.return_from @dungeon
   end
 
+  def monsters
+    @dungeon.monsters[(@level-1)..-1]
+  end
+
   def monsters_list
-    monsters = @dungeon.monsters[(@level-1)..-1].map do |monster|
+    monster_names = monsters.map do |monster|
       monster.name
     end
-    Words.comma_list(monsters)
+    Words.comma_list(monster_names)
   end
 
   def draw

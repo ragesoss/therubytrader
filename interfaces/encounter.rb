@@ -3,11 +3,13 @@ require_relative '../actions/encounter_actions'
 class Encounter < Interface
   attr_reader :destination, :distance_remaining
 
-  def initialize destination, distance_remaining
+  def initialize destination: nil, distance_remaining: nil, enemy: nil, callback: nil
     @destination = destination
     @distance_remaining = distance_remaining
 
-    @enemy = EncounterActions.pick_monster(@destination)
+    @enemy = enemy || EncounterActions.pick_monster(@destination)
+    @callback = callback
+
     @round = 1
     @info_one = Gosu::Image.from_text("#{distance_remaining} leagues from #{destination.name}, you encounter #{@enemy.name}!", 30)
     set_fight_options
@@ -64,7 +66,11 @@ class Encounter < Interface
   def continue_on
     unset_button_down
     destroy
-    TravelActions.continue_on_to destination, distance_remaining
+    if @callback
+      @callback.call
+    else
+      TravelActions.continue_on_to destination, distance_remaining
+    end
   end
 
   def end_game

@@ -13,20 +13,20 @@ class TravelActions < Action
     continue_on_to State.location, total_distance
   end
 
-  def self.continue_on_to destination, remaining_distance
-    if remaining_distance == 0
+  def self.continue_on_to destination, distance_remaining
+    if distance_remaining == 0
       destination.enter
     else
-      move_closer(destination, remaining_distance){ return }
-      continue_on_to destination, remaining_distance - 1
+      move_closer(destination, distance_remaining) { return }
+      continue_on_to destination, distance_remaining - 1
     end
   end
 
-  def self.move_closer destination, remaining_distance
+  def self.move_closer destination, distance_remaining
     # chance of encounter
     return unless rand(200) == 1
 
-    Encounter.new(destination, remaining_distance).create
+    Encounter.new(destination: destination, distance_remaining: distance_remaining).create
     yield
   end
 
