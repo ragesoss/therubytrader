@@ -8,6 +8,11 @@ class TravelActions < Action
     continue_on_to destination, total_distance
   end
 
+  def self.return_from location
+    total_distance = distance_to location
+    continue_on_to State.location, total_distance
+  end
+
   def self.continue_on_to destination, remaining_distance
     if remaining_distance == 0
       destination.enter
