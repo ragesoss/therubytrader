@@ -1,8 +1,8 @@
 class InDungeon < Interface
   def initialize dungeon
     @dungeon = dungeon
-    @level = 0
-    @info_one = Gosu::Image.from_text("You have entered the dungeon of #{@dungeon.name}, which has #{monsters_list}.", 30, { width: 1000 })
+    @level = 1
+    @info_one = Gosu::Image.from_text("You have entered the dungeon of #{@dungeon.name}, which has #{monsters_list}.", 30, { width: 1200 })
     @options = {
       fight: 'Delve into the dungeon',
       flee: 'Flee'
@@ -11,8 +11,15 @@ class InDungeon < Interface
     setup_input_handling
   end
 
+  def enter_level level
+    @level = level
+    @info_one = Gosu::Image.from_text("You've made your way to level #{level} of #{@dungeon.name}, which still has #{monsters_list}.", 30, { width: 1000 })
+    create
+  end
+
   def fight
-    # Implement dungeon sequence to turn this into a series of encounters
+    destroy
+    enter_level(@level + 1)
   end
 
   def flee
@@ -21,7 +28,7 @@ class InDungeon < Interface
   end
 
   def monsters_list
-    monsters = @dungeon.monsters[@level..-1].map do |monster|
+    monsters = @dungeon.monsters[(@level-1)..-1].map do |monster|
       monster.name
     end
     Words.comma_list(monsters)
