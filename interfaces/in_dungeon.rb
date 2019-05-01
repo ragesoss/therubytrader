@@ -4,8 +4,8 @@ class InDungeon < Interface
     @level = 1
     @info_one = Gosu::Image.from_text("You have entered the dungeon of #{@dungeon.name}, which has #{monsters_list}.", 30, { width: 1200 })
     @options = {
-      fight: 'Delve into the dungeon',
-      flee: 'Flee'
+      fight: 'Enter the dungeon',
+      flee: 'Leave'
     }
     @selected_option = 0
     setup_input_handling
@@ -13,7 +13,18 @@ class InDungeon < Interface
 
   def enter_level level
     @level = level
-    @info_one = Gosu::Image.from_text("You've made your way to level #{level} of #{@dungeon.name}, which still has #{monsters_list}.", 30, { width: 1000 })
+    if monsters.empty?
+      @info_one = Gosu::Image.from_text("You've cleared the dungeon!", 30, { width: 1000 })
+      @options = {
+        flee: "Leave"
+      }
+    else
+      @options = {
+        fight: 'Delve deeper into the dungeon',
+        flee: 'Flee'
+      }
+      @info_one = Gosu::Image.from_text("You've made your way to level #{level} of #{@dungeon.name}, which still has #{monsters_list}.", 30, { width: 1000 })
+    end
     create
     setup_input_handling
   end
@@ -30,7 +41,7 @@ class InDungeon < Interface
   end
 
   def monsters
-    @dungeon.monsters[(@level-1)..-1]
+    @dungeon.monsters[(@level - 1)..-1]
   end
 
   def monsters_list

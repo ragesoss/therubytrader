@@ -66,11 +66,7 @@ class Encounter < Interface
   def continue_on
     unset_button_down
     destroy
-    if @callback
-      @callback.call
-    else
-      TravelActions.continue_on_to destination, distance_remaining
-    end
+    @callback.call
   end
 
   def end_game

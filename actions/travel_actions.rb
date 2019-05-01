@@ -26,7 +26,8 @@ class TravelActions < Action
     # chance of encounter
     return unless rand(200) == 1
 
-    Encounter.new(destination: destination, distance_remaining: distance_remaining).create
+    callback = Proc.new { continue_on_to destination, distance_remaining }
+    Encounter.new(destination: destination, distance_remaining: distance_remaining, callback: callback).create
     yield
   end
 
