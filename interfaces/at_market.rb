@@ -123,7 +123,6 @@ class AtMarket < Interface
   end
 
   def leave_shop
-    unset_button_down
     destroy
     InTown.new(town).create
   end

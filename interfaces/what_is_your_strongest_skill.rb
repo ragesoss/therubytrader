@@ -21,7 +21,6 @@ class WhatIsYourStrongestSkill < Interface
         @selected_skill_index = (@selected_skill_index - 1) % SKILLS.length
       when Gosu::KB_ENTER, Gosu::KB_RETURN
         $adventurer.change_skill SKILLS[@selected_skill_index], 2
-        unset_button_down
         destroy
         Background.join
         starting_town = $state[:towns][:flossvale]

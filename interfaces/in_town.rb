@@ -71,7 +71,6 @@ class InTown < Interface
   end
 
   def shop
-    unset_button_down
     destroy
     AtMarket.new(town).create
   end
@@ -81,7 +80,6 @@ class InTown < Interface
   end
 
   def leave
-    unset_button_down
     Background.join
     destroy
     Overworld.new(town).create

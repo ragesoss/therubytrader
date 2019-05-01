@@ -12,7 +12,6 @@ class Start < Interface
     }
     State.save_files.each do |save|
       define_singleton_method("load_#{save}") do
-        unset_button_down
         destroy
         State.load_save save
       end
@@ -44,7 +43,6 @@ class Start < Interface
   end
 
   def start_game
-    unset_button_down
     destroy
     WhatIsYourName.new.create
   end

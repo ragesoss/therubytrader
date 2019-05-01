@@ -64,7 +64,6 @@ class Encounter < Interface
   end
 
   def continue_on
-    unset_button_down
     destroy
     @callback.call
   end
