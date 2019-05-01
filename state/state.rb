@@ -40,4 +40,9 @@ class State
   def self.join_background
     Background.join
   end
+
+  def self.game_over!
+    destroy_save_file if hardcore?
+    $window.close!
+  end
 end

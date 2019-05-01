@@ -69,8 +69,7 @@ class Encounter < Interface
   end
 
   def end_game
-    State.destroy_save_file if State.hardcore?
-    $window.close!
+    State.game_over!
   end
 
   def set_escape
