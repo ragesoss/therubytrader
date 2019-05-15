@@ -16,51 +16,59 @@ class Overworld < Interface
     @location = location
     @map_offset_x = Map.offset(location.location[0])
     @map_offset_y = Map.offset(location.location[1])
+    set_locations
     location.set_background
     @background = $backgrounds[location.key]
     @info_one = Gosu::Image.from_text($adventurer.status, 30)
     @info_two = Gosu::Image.from_text('Where do you want to travel?', 30)
-    @far_towns_draw ||= far_towns.map do |town|
+    @far_locations_draw ||= @far_locations.map do |town|
       pin = "• #{town.name}"
       image = Gosu::Image.from_text(pin, INACTIVE_SIZE)
       [town, image]
     end
 
-    @selected_option = nearby_towns.index location
+    @selected_option = @near_locations.index location
     setup_input_handling
     set_actions
   end
 
-  def towns
-    $state[:towns].values
+  def towns_and_dungeons
+    $state[:towns].values + $state[:dungeons].values
   end
 
   def max_travel
     @max_travel ||= 350 + 200 * $adventurer.survival
   end
 
-  def nearby_towns
-    @nearby_towns ||= towns_and_dungeons
+  def set_locations
+    @far_locations = []
+    @near_locations = []
+    towns_and_dungeons.each do |location|
+      next unless on_map? location
+      if Distance.between(location.location, @location.location) <= max_travel
+        @near_locations << location
+      else
+        @far_locations << location
+      end
+    end
   end
 
-  def towns_and_dungeons
-    (towns + $state[:dungeons].values).select do |town|
-      Distance.between(town.location, @location.location) <= max_travel
-    end
+  def on_map? location
+    y = location.long - @map_offset_y + TOP_MARGIN
+    return false if y < TOP_MARGIN
+    return false if y > (WINDOW_SIZE - BOTTOM_MARGIN)
+    x = location.lat - @map_offset_x
+    return false if x < 0
+    return false if x > WINDOW_SIZE
+    return true
   end
 
   def options
-    nearby_towns
-  end
-
-  def far_towns
-    @far_towns ||= towns.select do |town|
-      Distance.between(town.location, @location.location) > max_travel
-    end
+    @near_locations
   end
 
   def set_actions
-    nearby_towns.each do |town|
+    @near_locations.each do |town|
       define_singleton_method(town.key) do
         destroy
         TravelActions.set_off_to(town)
@@ -72,17 +80,15 @@ class Overworld < Interface
   INACTIVE_SIZE = 20
   def draw
     @background.draw 0, TOP_MARGIN, 0
-    selected_town = nearby_towns[@selected_option]
+    selected_town = @near_locations[@selected_option]
     Gosu::Image.from_text(selected_town.description, 40).draw 10, 1380, 0
-    @far_towns_draw.each do |town, label|
+    @far_locations_draw.each do |town, label|
       town_y = town.long - @map_offset_y + TOP_MARGIN
-      next if town_y < TOP_MARGIN
-      next if town_y > (WINDOW_SIZE - BOTTOM_MARGIN)
       label.draw town.lat - @map_offset_x, town_y, 2, 1, 1, LIGHT_GRAY
       label.draw town.lat - @map_offset_x + 1, town_y + 1, 1, 1, 1, BLACK
     end
 
-    nearby_towns.each.with_index do |town, i|
+    @near_locations.each.with_index do |town, i|
       selected = @selected_option == i
       style = selected ? { bold: true } : {}
       z_index = selected ? 3 : 1
@@ -105,7 +111,7 @@ class Overworld < Interface
   end
 
   def take_action
-    selected_action = nearby_towns[@selected_option].key
+    selected_action = @near_locations[@selected_option].key
     send selected_action
   end
 end
