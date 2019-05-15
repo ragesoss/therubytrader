@@ -49,9 +49,9 @@ class AtMarket < Interface
 
   def update_greeting greeting = nil
     if greeting
-      @greeting = Gosu::Image.from_text(greeting, 30)
+      @info_two = Gosu::Image.from_text(greeting, 30)
     else
-      @greeting = Gosu::Image.from_text($adventurer.status, 30)
+      @info_two = Gosu::Image.from_text($adventurer.status, 30)
     end
   end
 
